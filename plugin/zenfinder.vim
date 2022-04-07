@@ -87,10 +87,13 @@ function! s:OpenPrompt(type) abort
     return
   endif
 
-  " location list cannot open when empty, so set it first
+  " location list
   lexpr []
   lopen
   let s:location_window_id = win_getid()
+  nnoremap <silent><buffer> <C-Tab> <C-w>ja
+
+  " pseudo-prompt
   below new
   let s:previous_status = &laststatus
   setlocal laststatus=0
@@ -115,6 +118,7 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer><silent> <C-n> <C-o>:call <SID>RotateActive(1)<CR>
   inoremap <buffer><silent> <C-p> <C-o>:call <SID>RotateActive(0)<CR>
   inoremap <buffer> : <C-o>:
+  inoremap <buffer> <C-Tab> <Esc><C-w>k
 endfunction
 
 command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')

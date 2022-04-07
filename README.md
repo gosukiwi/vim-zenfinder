@@ -55,3 +55,7 @@ Trigger with your mapping, or just using `:Zenfinder files` or
 Navigate your files by typing, to fuzzy find and filter the search, choose the
 current file with `<C-j>` and `<C-k>` (`<C-n>` and `<C-p>` are also
 available), `:` to enter command line mode, `ENTER` to navigate into the file.
+
+You can also use `<C-Tab>` to toggle between Zenfinder's prompt and the
+location list, where you can use all your regular location list mappings,
+commands and whatnot.
