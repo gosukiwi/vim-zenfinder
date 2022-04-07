@@ -14,6 +14,11 @@ function! LoadFiles() abort
   let s:files = systemlist(command)->map({ index, file -> substitute(file, cwd, '', '')[1:] })
 endfunction
 
+function! LoadBuffers() abort
+  let filelist = getbufinfo({'buflisted': 1})->map({ index, buffer -> buffer.name})
+  let s:files = filelist
+endfunction
+
 function! FindFiles(pattern) abort
   if a:pattern == '' | return copy(s:files) | endif
 
@@ -68,8 +73,18 @@ function! RotateActive(clockwise) abort
   call setloclist(s:location_window_id, s:formatted_files, 'r')
 endfunction
 
-function! OpenPrompt() abort
-  call LoadFiles()
+function! OpenPrompt(type) abort
+  if a:type == 'buffers'
+    call LoadBuffers()
+  else
+    call LoadFiles()
+  endif
+
+  if len(s:files) == 0
+    echo ':Zenfinder => No entries.'
+    return
+  endif
+
   " location list cannot open when empty, so set it first
   lexpr []
   lopen
@@ -100,4 +115,4 @@ function! OpenPrompt() abort
   inoremap <buffer> : <C-o>:
 endfunction
 
-nnoremap <silent> <leader>q :call OpenPrompt()<CR>
+command! -bang Zenfinder call OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
