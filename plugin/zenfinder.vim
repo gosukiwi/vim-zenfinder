@@ -5,8 +5,10 @@
 if !exists('g:zenfinder_command')
   let g:zenfinder_command = 'rg %s --files --color=never --glob ""' 
 endif
-if !exists('s:files')  | let s:files = []  | endif
-if !exists('s:prompt') | let s:prompt = '' | endif
+
+let s:files = []
+let s:prompt = ''
+let s:is_prompt_open = 0
 
 function! s:LoadFiles() abort
   let cwd = escape(getcwd(), "\\")
@@ -35,6 +37,7 @@ function! s:TriggerPromptChanged() abort
 endfunction
 
 function! s:ClosePrompt() abort
+  let s:is_prompt_open = 0
   let s:prompt = ''
   execute "setlocal laststatus=" . s:previous_status
   q!
@@ -70,6 +73,9 @@ function! s:RotateActive(clockwise) abort
 endfunction
 
 function! s:OpenPrompt(type) abort
+  if s:is_prompt_open | return | endif
+
+  let s:is_prompt_open = 1
   if a:type == 'buffers'
     call s:LoadBuffers()
   else
