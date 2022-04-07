@@ -22,10 +22,10 @@ endfunction
 
 function! HandlePromptChanged() abort
   let matched_files = FindFiles(s:prompt)
-  " See `:help setqflist` for info about this mapping
+  " See `:help setloclist` for info about this mapping
   let s:formatted_files = map(matched_files, { index, file -> { 'filename': file, 'lnum': 1 } })
 
-  call setqflist(s:formatted_files, 'r')
+  call setloclist(s:location_window_id, s:formatted_files, 'r')
 endfunction
 
 function! TriggerPromptChanged() abort
@@ -37,12 +37,12 @@ function! ClosePrompt() abort
   let s:prompt = ''
   execute "setlocal laststatus=" . s:previous_status
   q!
-  cclose
+  lclose
 endfunction
 
 function! RunPrompt() abort
   call ClosePrompt()
-  silent cc
+  silent ll
 endfunction
 
 function! PromptHandleBackspace() abort
@@ -65,12 +65,15 @@ function! RotateActive(clockwise) abort
     let s:formatted_files = extend([head], tail)
   endif
 
-  call setqflist(s:formatted_files, 'r')
+  call setloclist(s:location_window_id, s:formatted_files, 'r')
 endfunction
 
 function! OpenPrompt() abort
   call LoadFiles()
-  copen
+  " location list cannot open when empty, so set it first
+  lexpr []
+  lopen
+  let s:location_window_id = win_getid()
   below new
   let s:previous_status = &laststatus
   setlocal laststatus=0
