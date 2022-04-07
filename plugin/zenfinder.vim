@@ -98,7 +98,7 @@ function! s:OpenPrompt(type) abort
 
   " quickfix list
   copen
-  nnoremap <silent><buffer> <C-Tab> <C-w>ja
+  nnoremap <buffer><silent> <C-Tab> <C-w>ja
   nmap <buffer><silent> <BS> <C-w>ja<Esc>
   nmap <buffer><silent> <Esc> <C-w>ja<Esc>
   nmap <buffer><silent> q <C-w>ja<Esc>
@@ -123,7 +123,6 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer><silent> <CR> <Esc>:call <SID>RunPrompt()<CR>
   imap <expr><buffer><silent> <BS> <SID>PromptHandleBackspace()
   imap <expr><buffer><silent> <C-w> <SID>PromptHandleCW()
-
   inoremap <buffer><silent> <C-j> <C-o>:call <SID>RotateActive(1)<CR>
   inoremap <buffer><silent> <C-k> <C-o>:call <SID>RotateActive(0)<CR>
   inoremap <buffer><silent> <C-n> <C-o>:call <SID>RotateActive(1)<CR>
