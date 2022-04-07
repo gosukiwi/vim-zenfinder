@@ -83,6 +83,7 @@ function! s:OpenPrompt(type) abort
   endif
 
   if len(s:files) == 0
+    let s:is_prompt_open = 0
     echo ':Zenfinder => No entries.'
     return
   endif
