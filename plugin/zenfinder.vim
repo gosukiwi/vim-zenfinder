@@ -41,7 +41,7 @@ function! s:ClosePrompt() abort
   let s:prompt = ''
   execute "setlocal laststatus=" . s:previous_status
   q!
-  lclose
+  cclose
 endfunction
 
 function! s:RunPrompt() abort
@@ -91,6 +91,9 @@ function! s:OpenPrompt(type) abort
   " quickfix list
   copen
   nnoremap <silent><buffer> <C-Tab> <C-w>ja
+  nmap <buffer><silent> <BS> <C-w>ja<Esc>
+  nmap <buffer><silent> <Esc> <C-w>ja<Esc>
+  nmap <buffer><silent> q <C-w>ja<Esc>
 
   " pseudo-prompt
   below new
