@@ -44,8 +44,8 @@ let g:zenfinder_command = 'dir %s /-n /b /s /a-d'
 let g:zenfinder_command = 'rg %s --files --color=never --glob ""'
 
 " the example assumes <leader> is mapped to something useful, like spacebar
-nnoremap <silent> <leader>f :Zenfinder<CR>
-nnoremap <silent> <leader>b :Zenfinder!<CR>
+nnoremap <silent> <leader>f :Zfind<CR>
+nnoremap <silent> <leader>b :Zfind!<CR>
 ```
 
 # Usage

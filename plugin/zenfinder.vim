@@ -74,8 +74,8 @@ endfunction
 
 function! s:OpenPrompt(type) abort
   if s:is_prompt_open | return | endif
-
   let s:is_prompt_open = 1
+
   if a:type == 'buffers'
     call s:LoadBuffers()
   else
@@ -122,4 +122,4 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer> <C-Tab> <Esc><C-w>k
 endfunction
 
-command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
+command! -bang Zfind call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
