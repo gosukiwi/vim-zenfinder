@@ -57,6 +57,14 @@ function! s:PromptHandleBackspace() abort
   return "\<Esc>"
 endfunction
 
+function! s:PromptHandleCW() abort
+  if len(s:prompt) > 0
+    return "\<C-w>"
+  endif
+
+  return ''
+endfunction
+
 function! s:RotateActive(clockwise) abort
   let items = copy(s:formatted_files)
   if a:clockwise == 1
@@ -114,6 +122,7 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer><silent> <Esc> <Esc>:call <SID>ClosePrompt()<CR>
   inoremap <buffer><silent> <CR> <Esc>:call <SID>RunPrompt()<CR>
   imap <expr><buffer><silent> <BS> <SID>PromptHandleBackspace()
+  imap <expr><buffer><silent> <C-w> <SID>PromptHandleCW()
 
   inoremap <buffer><silent> <C-j> <C-o>:call <SID>RotateActive(1)<CR>
   inoremap <buffer><silent> <C-k> <C-o>:call <SID>RotateActive(0)<CR>
