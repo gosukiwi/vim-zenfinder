@@ -107,7 +107,7 @@ endfunction
 
 function! s:TriggerPromptChanged() abort
   let s:prompt = getline('.')[3:]
-  let matched_files = s:FindFiles(s:prompt)[:10] " 10 first entries
+  let matched_files = s:FindFiles(s:prompt)[:9] " 9 first entries
   " See `:help setloclist` for info about this hash format
   let s:formatted_files = map(matched_files, { index, file -> { 'filename': file, 'lnum': 1 } })
 
