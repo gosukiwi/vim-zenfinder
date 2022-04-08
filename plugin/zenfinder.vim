@@ -100,7 +100,7 @@ function! s:OpenPrompt(type) abort
   lexpr []
   lopen
   let s:location_window_id = win_getid()
-  nnoremap <silent><buffer> <C-Tab> <C-w>ja
+  nnoremap <buffer><silent> <C-Tab> <C-w>ja
   nmap <buffer><silent> <BS> <C-w>ja<Esc>
   nmap <buffer><silent> <Esc> <C-w>ja<Esc>
   nmap <buffer><silent> q <C-w>ja<Esc>
