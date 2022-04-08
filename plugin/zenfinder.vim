@@ -19,17 +19,6 @@ let s:prompt_window_id = 0
 
 " VENDOR
 " ==============================================================================
-" original from https://stackoverflow.com/a/30101152/1015566
-function! s:DeleteUnlistedBuffers() abort
-  let tpbl = []
-  call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
-  for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
-    if getbufvar(buf, '&mod') == 0 && !buflisted(buf)
-      silent execute 'bwipeout' buf
-    endif
-  endfor
-endfunction
-
 " taken from https://github.com/dsummersl/vus/blob/master/autoload/_.vim
 function! s:Throttle(fn, wait, ...) abort
   let l:leading = 1
@@ -80,6 +69,16 @@ function! s:Throttle(fn, wait, ...) abort
 endfunction
 " ==============================================================================
 
+function s:EmptyLLAndWipeBuffers()
+  let items = getloclist(s:location_window_id)
+  for item in items
+    let buffer = item.bufnr
+    if !buflisted(buffer)
+      execute 'bwipeout' buffer
+    end
+  endfor
+endfunction
+
 function! s:AliasCommand(from, to) abort
   exec 'cnoreabbrev <expr> '.a:from
         \ .' ((getcmdtype() is# ":" && getcmdline() is# "'.a:from.'")'
@@ -125,11 +124,15 @@ endfunction
 function! s:ClosePrompt() abort
   let s:is_prompt_open = 0
   let s:prompt = ''
+
   call s:FocusPrompt()
   execute "setlocal laststatus=" . s:previous_status
-  q!
+  bwipeout
+  call s:EmptyLLAndWipeBuffers()
+
+  call s:FocusLL()
+  lexpr []
   lclose
-  call s:DeleteUnlistedBuffers()
 endfunction
 
 function! s:RunPrompt() abort
@@ -233,16 +236,15 @@ function! s:OpenPrompt(type) abort
   setlocal nonu
   setlocal nornu
   nnoremap <buffer><silent> <C-Tab> :call <SID>FocusPrompt()<CR>a
-  nmap <buffer><silent> <BS> :call <SID>FocusPrompt()<CR>a<Esc>
-  nmap <buffer><silent> <Esc> :call <SID>FocusPrompt()<CR>a<Esc>
-  nmap <buffer><silent> q :call <SID>FocusPrompt()<CR>a<Esc>
-  nmap <buffer><silent> a :call <SID>FocusPrompt()<CR>a
-  nmap <buffer><silent> A :call <SID>FocusPrompt()<CR>a
-  nmap <buffer><silent> i :call <SID>FocusPrompt()<CR>a
-  nmap <buffer><silent> I :call <SID>FocusPrompt()<CR>a
-  nmap <buffer><silent> C :call <SID>FocusPrompt()<CR>a
-  nmap <buffer><silent><nowait> c :call <SID>FocusPrompt()<CR>a
-  " nmap <buffer><silent> <C-w>k <Esc>
+  nnoremap <buffer><silent> <BS> :call <SID>ClosePrompt()<CR>
+  nnoremap <buffer><silent> <Esc> :call <SID>ClosePrompt()<CR>
+  nnoremap <buffer><silent> q :call <SID>ClosePrompt()<CR>
+  nnoremap <buffer><silent> a :call <SID>FocusPrompt()<CR>a
+  nnoremap <buffer><silent> A :call <SID>FocusPrompt()<CR>a
+  nnoremap <buffer><silent> i :call <SID>FocusPrompt()<CR>a
+  nnoremap <buffer><silent> I :call <SID>FocusPrompt()<CR>a
+  nnoremap <buffer><silent> C :call <SID>FocusPrompt()<CR>a
+  nnoremap <buffer><silent><nowait> c :call <SID>FocusPrompt()<CR>a
 
   " pseudo-prompt
   botright new
