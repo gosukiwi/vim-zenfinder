@@ -13,4 +13,17 @@ Help on using zenfinder                                               *zenfinder
  1. INTRODUCTION                                               *zen-coding-intro*
 
 `:Zenfinder` is a minimalistic, file-centric fuzzy finder. It populates the
-location list for you.
+location list for you. You can then easily just navigate into those files, or
+do operations on them, like you would normally do with any quickfix or
+location list.
+
+Here are a few usage examples:
+
+>
+  <leader>f            Invoke :Zenfinder, in file mode
+  appmodperson         Type to fuzzy find the file in `app/models/person.rb`
+                       Notice that it also matches `app/models/person.rb.old`
+  :                    Press `:`, enter in command line mode
+  :Lreject .old        Reject all entries in the location file that match `.old`
+  :ldo vsp             Open all in vertical splits
+  

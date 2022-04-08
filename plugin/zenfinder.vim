@@ -13,6 +13,12 @@ let s:files = []
 let s:prompt = ''
 let s:is_prompt_open = 0
 
+function! s:AliasCommand(from, to) abort
+  exec 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() is# ":" && getcmdline() is# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfunction
+
 function! s:LoadFiles() abort
   let cwd = escape(getcwd(), "\\")
   let command = substitute(g:zenfinder_command, '%s', cwd, '')
@@ -83,6 +89,18 @@ function! s:RotateActive(clockwise) abort
   call setloclist(s:location_window_id, s:formatted_files, 'r')
 endfunction
 
+function! s:Reject(pattern) abort
+  execute "normal \<C-w>k"
+  execute "Lfilter! " . a:pattern
+  execute "normal \<C-w>j"
+endfunction
+
+function! s:Filter(pattern) abort
+  execute "normal \<C-w>k"
+  execute "Lfilter " . a:pattern
+  execute "normal \<C-w>j"
+endfunction
+
 function! s:OpenPrompt(type) abort
   if s:is_prompt_open | return | endif
   let s:is_prompt_open = 1
@@ -133,9 +151,12 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer><silent> <C-n> <C-o>:call <SID>RotateActive(1)<CR>
   inoremap <buffer><silent> <C-p> <C-o>:call <SID>RotateActive(0)<CR>
   inoremap <buffer><silent> <C-Tab> <Esc><C-w>k
-  inoremap <buffer> : <Esc><C-w>k:
+  inoremap <buffer> : <C-o>:
 endfunction
 
 command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
-command! -nargs=1 Zfilter :Lfilter <args>
-command! -nargs=1 Zreject :Lfilter! <args>
+command! -nargs=1 Zreject call s:Reject(<f-args>)
+command! -nargs=1 Zfilter call s:Reject(<f-args>)
+call s:AliasCommand('ze', 'Zenfinder')
+call s:AliasCommand('zr', 'Zreject')
+call s:AliasCommand('zf', 'Zfilter')
