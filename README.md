@@ -19,7 +19,7 @@ See the [help](doc/zenfinder.txt) file for the complete documentation! `:help
 zenfinder`.
 
 ## Minimal
-Zenfinder is ~200 lines of Vimscript. It uses `ripgrep` for blazing fast file
+Zenfinder is ~300 lines of Vimscript. It uses `ripgrep` for blazing fast file
 listing (respecting things like `.gitignore`), as well as Vim's built-in
 `matchfuzzy` function to quickly search the results.
 
