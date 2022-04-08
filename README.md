@@ -1,5 +1,6 @@
 # Zenfinder
-A minimalistic, file-centric fuzzy finder for Vim, using the location list.
+A minimalistic, file-centric, **experimental** fuzzy finder for Vim, using the
+location list.
 
 The location list was made to be a list of file positions. This finder will
 allow you to fuzzy find your files, and populate the location list with the

@@ -93,12 +93,22 @@ function! s:RotateActive(clockwise) abort
 endfunction
 
 function! s:Reject(pattern) abort
+  if !s:is_prompt_open
+    echo ":Zenfinder => Prompt is closed"
+    return
+  endif
+
   execute "normal \<C-w>k"
   execute "Lfilter! " . a:pattern
   execute "normal \<C-w>j"
 endfunction
 
 function! s:Filter(pattern) abort
+  if !s:is_prompt_open
+    echo ":Zenfinder => Prompt is closed"
+    return
+  endif
+
   execute "normal \<C-w>k"
   execute "Lfilter " . a:pattern
   execute "normal \<C-w>j"
@@ -144,6 +154,7 @@ function! s:OpenPrompt(type) abort
   startinsert!
 
   autocmd TextChangedI <buffer> :call s:TriggerPromptChanged()
+  autocmd BufWinLeave <buffer> :call s:ClosePrompt()
 
   inoremap <buffer><silent> <Esc> <Esc>:call <SID>ClosePrompt()<CR>
   inoremap <buffer><silent> <CR> <Esc>:call <SID>RunPrompt()<CR>
@@ -159,7 +170,7 @@ endfunction
 
 command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
 command! -nargs=1 Zreject call s:Reject(<f-args>)
-command! -nargs=1 Zfilter call s:Reject(<f-args>)
+command! -nargs=1 Zfilter call s:Filter(<f-args>)
 call s:AliasCommand('ze', 'Zenfinder')
 call s:AliasCommand('zr', 'Zreject')
 call s:AliasCommand('zf', 'Zfilter')
