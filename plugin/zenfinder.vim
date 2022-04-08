@@ -122,9 +122,10 @@ function! s:FocusPrompt() abort
 endfunction
 
 function! s:ClosePrompt() abort
+  if s:is_prompt_open == 0 | return | endif
   let s:is_prompt_open = 0
-  let s:prompt = ''
 
+  let s:prompt = ''
   call s:FocusPrompt()
   execute "setlocal laststatus=" . s:previous_status
   bwipeout
@@ -137,7 +138,7 @@ endfunction
 
 function! s:RunPrompt() abort
   call s:FocusLL()
-  execute "normal \<CR>"
+  ll
   call s:ClosePrompt()
 endfunction
 
@@ -235,6 +236,7 @@ function! s:OpenPrompt(type) abort
   let s:location_window_id = win_getid()
   setlocal nonu
   setlocal nornu
+  nnoremap <buffer><silent> <CR> :call <SID>RunPrompt()<CR>
   nnoremap <buffer><silent> <C-Tab> :call <SID>FocusPrompt()<CR>a
   nnoremap <buffer><silent> <BS> :call <SID>ClosePrompt()<CR>
   nnoremap <buffer><silent> <Esc> :call <SID>ClosePrompt()<CR>
