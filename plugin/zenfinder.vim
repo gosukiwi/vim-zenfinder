@@ -17,6 +17,8 @@ let s:prompt = ''
 let s:is_prompt_open = 0
 let s:prompt_window_id = 0
 
+" VENDOR
+" ==============================================================================
 " taken from https://stackoverflow.com/a/30101152/1015566
 function! s:DeleteHiddenBuffers() abort
   let tpbl = []
@@ -29,6 +31,56 @@ function! s:DeleteHiddenBuffers() abort
     endif
   endfor
 endfunction
+
+" taken from https://github.com/dsummersl/vus/blob/master/autoload/_.vim
+function! s:Throttle(fn, wait, ...) abort
+  let l:leading = 1
+  if exists('a:1')
+    let l:leading = a:1
+  end
+
+  let l:result = {
+        \'data': {
+        \'leading': l:leading,
+        \'lastcall': 0,
+        \'lastresult': 0,
+        \'lastargs': 0,
+        \'timer_id': 0,
+        \'wait': a:wait},
+        \'fn': a:fn
+        \}
+
+  function l:result.wrap_call_fn(...) dict
+    let self.data.lastcall = reltime()
+    let self.data.lastresult = call(self.fn, self.data.lastargs)
+    let self.data.timer_id = 0
+    return self.data.lastresult
+  endfunction
+
+  function l:result.lastresult() dict
+    return self.data.lastresult
+  endfunction
+
+  function l:result.call(...) dict
+    if self.data.leading
+      let l:lastcall = self.data.lastcall 
+      let l:elapsed = reltimefloat(reltime(l:lastcall)) 
+      if type(l:lastcall) == 0 || l:elapsed > self.data.wait / 1000.0
+        let self.data.lastargs = a:000
+        return self.wrap_call_fn()
+      endif
+    elseif self.data.timer_id == 0
+      let self.data.lastargs = a:000
+      let self.data.timer_id = timer_start(self.data.wait, self.wrap_call_fn)
+      return '<throttled>'
+    else
+      return '<throttled>'
+    endif
+    return self.data.lastresult
+  endfunction
+  return l:result
+endfunction
+" ==============================================================================
 
 function! s:AliasCommand(from, to) abort
   exec 'cnoreabbrev <expr> '.a:from
@@ -62,6 +114,7 @@ function! s:TriggerPromptChanged() abort
   call setloclist(s:location_window_id, s:formatted_files, 'r')
 	call setloclist(s:location_window_id, [], 'a', {'title' : 'Zenfinder'})
 endfunction
+let s:ThrottledTriggerPromptChanged = s:Throttle(function('s:TriggerPromptChanged'), 50, 0)
 
 function! s:FocusLL() abort
   call win_gotoid(s:location_window_id)
@@ -202,10 +255,10 @@ function! s:OpenPrompt(type) abort
   set bufhidden=hide
   setlocal noswapfile
   put ='>> '
-  call s:TriggerPromptChanged()
+  call s:ThrottledTriggerPromptChanged.call()
   startinsert!
 
-  autocmd TextChangedI <buffer> :call s:TriggerPromptChanged()
+  autocmd TextChangedI <buffer> :call s:ThrottledTriggerPromptChanged.call()
   " autocmd BufWinLeave <buffer> :call s:ClosePrompt()
 
   inoremap <buffer><silent> <Esc> <Esc>:call <SID>ClosePrompt()<CR>
