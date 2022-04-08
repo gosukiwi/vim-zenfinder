@@ -133,6 +133,11 @@ function! s:OpenPrompt(type) abort
   nnoremap <buffer><silent> <C-Tab> <C-w>ja
   nmap <buffer><silent> <BS> <C-w>ja<Esc>
   nmap <buffer><silent> <Esc> <C-w>ja<Esc>
+  nmap <buffer><silent> a <C-w>ja
+  nmap <buffer><silent> A <C-w>ja
+  nmap <buffer><silent> i <C-w>ja
+  nmap <buffer><silent> I <C-w>ja
+  nmap <buffer><silent> C <C-w>ja
 
   " pseudo-prompt
   below new
