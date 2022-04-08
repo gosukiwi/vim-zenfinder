@@ -47,6 +47,7 @@ function! s:TriggerPromptChanged() abort
   let s:formatted_files = map(matched_files, { index, file -> { 'filename': file, 'lnum': 1 } })
 
   call setloclist(s:location_window_id, s:formatted_files, 'r')
+	call setloclist(s:location_window_id, [], 'a', {'title' : 'Zenfinder'})
 endfunction
 
 function! s:FocusLL() abort
@@ -100,6 +101,7 @@ function! s:RotateActive(clockwise) abort
   endif
 
   call setloclist(s:location_window_id, s:formatted_files, 'r')
+	call setloclist(s:location_window_id, [], 'a', {'title' : 'Zenfinder'})
 endfunction
 
 function! s:Reject(pattern) abort
@@ -120,6 +122,25 @@ function! s:Filter(pattern) abort
 
   call s:FocusLL()
   execute "Lfilter " . a:pattern
+endfunction
+
+function! s:FormatLocationList()
+  " not Zenfinder's location list
+  if !exists('s:location_window_id') | return | endif
+
+  let formatted_items = []
+  let items = getloclist(s:location_window_id)
+  for item in items
+    let bufinfo = getbufinfo(item.bufnr)[0]
+    let cwd = escape(getcwd(), "\\")
+    let filename = substitute(bufinfo.name, cwd, '.', '')
+    let filename = substitute(filename, '\\', '/', 'g')
+    call add(formatted_items, filename)
+  endfor
+
+  setlocal modifiable
+  call setline('1', formatted_items)
+  setlocal nomodifiable nomodified
 endfunction
 
 function! s:OpenPrompt(type) abort
@@ -186,6 +207,16 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer><silent> <C-Tab> <Esc>:call <SID>FocusLL()<CR>
   inoremap <buffer> : <Esc>:call <SID>FocusLL()<CR>:
 endfunction
+
+" configure the custom formatting function
+" set quickfixtextfunc=s:FormatLocationList
+augroup LocationListFormat
+  autocmd!
+  autocmd BufReadPost quickfix
+        \ if getwininfo(win_getid())[0]['loclist']
+        \ |   call s:FormatLocationList()
+        \ | endif
+augroup END
 
 command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
 command! -nargs=1 Zreject call s:Reject(<f-args>)
