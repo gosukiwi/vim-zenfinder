@@ -27,3 +27,4 @@ Here are a few usage examples:
   :Lreject .old        Reject all entries in the location file that match `.old`
   :ldo vsp             Open all in vertical splits
   
+vim:tw=78:ts=8:ft=help:norl:

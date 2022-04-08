@@ -98,9 +98,7 @@ function! s:Reject(pattern) abort
     return
   endif
 
-  execute "normal \<C-w>k"
   execute "Lfilter! " . a:pattern
-  execute "normal \<C-w>j"
 endfunction
 
 function! s:Filter(pattern) abort
@@ -109,9 +107,7 @@ function! s:Filter(pattern) abort
     return
   endif
 
-  execute "normal \<C-w>k"
   execute "Lfilter " . a:pattern
-  execute "normal \<C-w>j"
 endfunction
 
 function! s:OpenPrompt(type) abort
@@ -137,7 +133,6 @@ function! s:OpenPrompt(type) abort
   nnoremap <buffer><silent> <C-Tab> <C-w>ja
   nmap <buffer><silent> <BS> <C-w>ja<Esc>
   nmap <buffer><silent> <Esc> <C-w>ja<Esc>
-  nmap <buffer><silent> q <C-w>ja<Esc>
 
   " pseudo-prompt
   below new
@@ -165,7 +160,7 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer><silent> <C-n> <C-o>:call <SID>RotateActive(1)<CR>
   inoremap <buffer><silent> <C-p> <C-o>:call <SID>RotateActive(0)<CR>
   inoremap <buffer><silent> <C-Tab> <Esc><C-w>k
-  inoremap <buffer> : <C-o>:
+  inoremap <buffer> : <Esc><C-w>k:
 endfunction
 
 command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
