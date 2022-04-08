@@ -17,6 +17,19 @@ let s:prompt = ''
 let s:is_prompt_open = 0
 let s:prompt_window_id = 0
 
+" taken from https://stackoverflow.com/a/30101152/1015566
+function! s:DeleteHiddenBuffers() abort
+  let tpbl = []
+  let closed = 0
+  call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
+  for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
+    if getbufvar(buf, '&mod') == 0
+      silent execute 'bwipeout' buf
+      let closed += 1
+    endif
+  endfor
+endfunction
+
 function! s:AliasCommand(from, to) abort
   exec 'cnoreabbrev <expr> '.a:from
         \ .' ((getcmdtype() is# ":" && getcmdline() is# "'.a:from.'")'
@@ -65,6 +78,7 @@ function! s:ClosePrompt() abort
   execute "setlocal laststatus=" . s:previous_status
   q!
   lclose
+  call s:DeleteHiddenBuffers()
 endfunction
 
 function! s:RunPrompt() abort
