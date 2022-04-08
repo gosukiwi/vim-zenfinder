@@ -230,6 +230,8 @@ function! s:OpenPrompt(type) abort
   lexpr []
   botright lopen
   let s:location_window_id = win_getid()
+  setlocal nonu
+  setlocal nornu
   nnoremap <buffer><silent> <C-Tab> :call <SID>FocusPrompt()<CR>a
   nmap <buffer><silent> <BS> :call <SID>FocusPrompt()<CR>a<Esc>
   nmap <buffer><silent> <Esc> :call <SID>FocusPrompt()<CR>a<Esc>
