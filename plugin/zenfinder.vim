@@ -124,7 +124,7 @@ function! s:Filter(pattern) abort
   execute "Lfilter " . a:pattern
 endfunction
 
-function! s:FormatLocationList()
+function! s:FormatLocationList(info)
   " not Zenfinder's location list
   if !exists('s:location_window_id') | return | endif
 
@@ -138,9 +138,7 @@ function! s:FormatLocationList()
     call add(formatted_items, filename)
   endfor
 
-  setlocal modifiable
-  call setline('1', formatted_items)
-  setlocal nomodifiable nomodified
+  return formatted_items
 endfunction
 
 function! s:OpenPrompt(type) abort
@@ -209,14 +207,7 @@ function! s:OpenPrompt(type) abort
 endfunction
 
 " configure the custom formatting function
-" set quickfixtextfunc=s:FormatLocationList
-augroup LocationListFormat
-  autocmd!
-  autocmd BufReadPost quickfix
-        \ if getwininfo(win_getid())[0]['loclist']
-        \ |   call s:FormatLocationList()
-        \ | endif
-augroup END
+set quickfixtextfunc=s:FormatLocationList
 
 command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
 command! -nargs=1 Zreject call s:Reject(<f-args>)
