@@ -32,8 +32,8 @@ endfunction
 
 function! s:TriggerPromptChanged() abort
   let s:prompt = getline('.')[3:]
-  let matched_files = s:FindFiles(s:prompt)
-  " See `:help setloclist` for info about this mapping
+  let matched_files = s:FindFiles(s:prompt)[:10] " 10 first entries
+  " See `:help setloclist` for info about this hash format
   let s:formatted_files = map(matched_files, { index, file -> { 'filename': file, 'lnum': 1 } })
 
   call setloclist(s:location_window_id, s:formatted_files, 'r')
@@ -132,8 +132,8 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer><silent> <C-k> <C-o>:call <SID>RotateActive(0)<CR>
   inoremap <buffer><silent> <C-n> <C-o>:call <SID>RotateActive(1)<CR>
   inoremap <buffer><silent> <C-p> <C-o>:call <SID>RotateActive(0)<CR>
-  inoremap <buffer> : <C-o>:
-  inoremap <buffer> <C-Tab> <Esc><C-w>k
+  inoremap <buffer><silent> <C-Tab> <Esc><C-w>k
+  inoremap <buffer> : <Esc><C-w>k:
 endfunction
 
 command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
