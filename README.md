@@ -15,7 +15,7 @@ For example, you could run a replace across several files:
 :ldo %s/replace this/with this/g
 ```
 
-See the [doc/zenfinder.txt](help) file for the complete documentation! `:help
+See the [help](doc/zenfinder.txt) file for the complete documentation! `:help
 zenfinder`.
 
 ## Minimal
