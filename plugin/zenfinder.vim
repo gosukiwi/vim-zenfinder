@@ -143,7 +143,7 @@ function! s:OpenPrompt(type) abort
 
   " location list
   lexpr []
-  lopen
+  botright lopen
   let s:location_window_id = win_getid()
   nnoremap <buffer><silent> <C-Tab> <C-w>ja
   nmap <buffer><silent> <BS> <C-w>ja<Esc>
@@ -157,7 +157,7 @@ function! s:OpenPrompt(type) abort
   " nmap <buffer><silent> <C-w>k <Esc>
 
   " pseudo-prompt
-  below new
+  botright new
   let s:previous_status = &laststatus
   setlocal laststatus=0
   resize 1
