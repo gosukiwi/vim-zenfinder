@@ -114,7 +114,7 @@ function! s:TriggerPromptChanged() abort
   call setloclist(s:location_window_id, s:formatted_files, 'r')
 	call setloclist(s:location_window_id, [], 'a', {'title' : 'Zenfinder'})
 endfunction
-let s:ThrottledTriggerPromptChanged = s:Throttle(function('s:TriggerPromptChanged'), 50, 0)
+let s:ThrottledTriggerPromptChanged = s:Throttle(function('s:TriggerPromptChanged'), 50, 1)
 
 function! s:FocusLL() abort
   call win_gotoid(s:location_window_id)
