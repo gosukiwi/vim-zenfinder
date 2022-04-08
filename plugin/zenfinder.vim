@@ -48,9 +48,15 @@ function! s:TriggerPromptChanged() abort
   call setloclist(s:location_window_id, s:formatted_files, 'r')
 endfunction
 
+function! s:FocusPrompt() abort
+  call win_gotoid(s:location_window_id)
+  execute "normal \<C-w>j"
+endfunction
+
 function! s:ClosePrompt() abort
   let s:is_prompt_open = 0
   let s:prompt = ''
+  call s:FocusPrompt()
   execute "setlocal laststatus=" . s:previous_status
   q!
   lclose
@@ -111,7 +117,10 @@ function! s:Filter(pattern) abort
 endfunction
 
 function! s:OpenPrompt(type) abort
-  if s:is_prompt_open | return | endif
+  if s:is_prompt_open
+    call s:ClosePrompt()
+    return
+  endif
   let s:is_prompt_open = 1
 
   if a:type == 'buffers'
@@ -133,11 +142,13 @@ function! s:OpenPrompt(type) abort
   nnoremap <buffer><silent> <C-Tab> <C-w>ja
   nmap <buffer><silent> <BS> <C-w>ja<Esc>
   nmap <buffer><silent> <Esc> <C-w>ja<Esc>
+  nmap <buffer><silent> q <C-w>ja<Esc>
   nmap <buffer><silent> a <C-w>ja
   nmap <buffer><silent> A <C-w>ja
   nmap <buffer><silent> i <C-w>ja
   nmap <buffer><silent> I <C-w>ja
   nmap <buffer><silent> C <C-w>ja
+  " nmap <buffer><silent> <C-w>k <Esc>
 
   " pseudo-prompt
   below new
@@ -154,7 +165,7 @@ function! s:OpenPrompt(type) abort
   startinsert!
 
   autocmd TextChangedI <buffer> :call s:TriggerPromptChanged()
-  autocmd BufWinLeave <buffer> :call s:ClosePrompt()
+  " autocmd BufWinLeave <buffer> :call s:ClosePrompt()
 
   inoremap <buffer><silent> <Esc> <Esc>:call <SID>ClosePrompt()<CR>
   inoremap <buffer><silent> <CR> <Esc>:call <SID>RunPrompt()<CR>
