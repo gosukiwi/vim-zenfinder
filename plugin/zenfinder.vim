@@ -1,6 +1,9 @@
 " [zenfinder]
 " Depends on: <ripgrep>, [cfilter] (built-in)
 " ==============================================================================
+if exists('g:zenfinder_loaded') | finish | endif
+let g:zenfinder_loaded = 1
+
 " use ripgrep for listing files by default
 if !exists('g:zenfinder_command')
   let g:zenfinder_command = 'rg %s --files --color=never --glob ""' 
