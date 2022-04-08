@@ -1,10 +1,13 @@
 " [zenfinder]
-" Depends on: <ripgrep>
+" Depends on: <ripgrep>, [cfilter] (built-in)
 " ==============================================================================
 " use ripgrep for listing files by default
 if !exists('g:zenfinder_command')
   let g:zenfinder_command = 'rg %s --files --color=never --glob ""' 
 endif
+
+" Add cfilter if it wasn't added already
+packadd! cfilter
 
 let s:files = []
 let s:prompt = ''
@@ -134,3 +137,5 @@ function! s:OpenPrompt(type) abort
 endfunction
 
 command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
+command! -nargs=1 Zfilter :Lfilter <args>
+command! -nargs=1 Zreject :Lfilter! <args>

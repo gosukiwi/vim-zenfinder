@@ -59,3 +59,6 @@ available), `:` to enter command line mode, `ENTER` to navigate into the file.
 You can also use `<C-Tab>` to toggle between Zenfinder's prompt and the
 location list, where you can use all your regular location list mappings,
 commands and whatnot.
+
+Besides typing, you can also filter the currently displayed files with
+`:Filter` and `:Reject`.

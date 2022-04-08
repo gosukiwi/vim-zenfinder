@@ -1,0 +1,16 @@
+*zenfinder.txt*  Minimalist file-centric fuzzy finder
+
+Author:  Federico Ramirez <https://github.com/gosukiwi/>
+License: Same terms as Vim itself (see |license|)
+
+Help on using zenfinder                                               *zenfinder*
+
+    1. INTRODUCTION ................................. |zenfinder-intro|
+    2. COMMANDS ..................................... |zenfinder-commands|
+    3. MAPPINGS ..................................... |zenfinder-mappings|
+
+================================================================================
+ 1. INTRODUCTION                                               *zen-coding-intro*
+
+`:Zenfinder` is a minimalistic, file-centric fuzzy finder. It populates the
+location list for you.
