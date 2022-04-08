@@ -135,8 +135,8 @@ function! s:ClosePrompt() abort
 endfunction
 
 function! s:RunPrompt() abort
-  call s:ClosePrompt()
   silent ll
+  call s:ClosePrompt()
 endfunction
 
 function! s:PromptHandleBackspace() abort
