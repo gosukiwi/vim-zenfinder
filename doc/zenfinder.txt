@@ -5,26 +5,74 @@ License: Same terms as Vim itself (see |license|)
 
 Help on using zenfinder                                               *zenfinder*
 
-    1. INTRODUCTION ................................. |zenfinder-intro|
-    2. COMMANDS ..................................... |zenfinder-commands|
-    3. MAPPINGS ..................................... |zenfinder-mappings|
+    1. USAGE ........................................ |zenfinder-intro|
+    2. CONFIGURATION ................................ |zenfinder-configuration|
 
 ================================================================================
- 1. INTRODUCTION                                               *zen-coding-intro*
+ 1. USAGE                                                        *zenfinder-intro*
 
-`:Zenfinder` is a minimalistic, file-centric fuzzy finder. It populates the
+*:Zenfinder* is a minimalistic, file-centric fuzzy finder. It populates the
 location list for you. You can then easily just navigate into those files, or
 do operations on them, like you would normally do with any quickfix or
 location list.
 
+Trigger |:Zenfinder| with your mapping, or just using `:Zenfinder files` or `:Zenfinder
+buffers`. You can also use *:zf* as an alias for |:Zenfinder|.
+
+- Navigate your files by typing using fuzzy find.
+- Choose the current file with `<C-j>` and `<C-k>` (`<C-n>` and `<C-p>` are also available)
+- Press `<CR>` to open the file
+- Use `<C-Tab>` to toggle between the prompt and the location list
+- Use `:` to enter command line mode
+- Filter the location list with `:Zfilter` and `:Zreject`
+- Use `:ldo` to perform a command on all visible files
+
 Here are a few usage examples:
 
+Example 1:
 >
   <leader>f            Invoke :Zenfinder, in file mode
   appmodperson         Type to fuzzy find the file in `app/models/person.rb`
+                       Notice that its the only matching file
+  <CR>                 Press ENTER, opening the file in the current active
+                       window
+  
+
+Example 2:
+>
+  :zf                  Invoke :Zenfinder, in file mode
+  appmodperson         Type to fuzzy find the file in `app/models/person.rb`
                        Notice that it also matches `app/models/person.rb.old`
   :                    Press `:`, enter in command line mode
-  :Lreject .old        Reject all entries in the location file that match `.old`
+  :Zreject .old        Reject all entries in the location file that match `.old`
   :ldo vsp             Open all in vertical splits
+
+Example 3:
+>
+  <leader>b            Invoke :Zenfinder!, in buffer mode
+  .md                  Type .md, and find all markdown files
+  :                    Enter command line mode
+  :ldo %s/replace this/with this/g
+<
+================================================================================
+ 2. CONFIGURATION                                               *zenfinder-config*
+
+You can set the *g:zenfinder_command* variable to whatever command you want to
+use, if you don't want to use `ripgrep`.
+
+Below are a few examples:
+>
+  " by default, use ripgrep
+  let g:zenfinder_command = 'rg %s --files --color=never --glob ""'
+
+  " use ag, the silver searcher
+  let g:zenfinder_command = 'ag %s -l --nocolor -g ""'
+
+  " macOS/Linux
+  let g:zenfinder_command = 'find %s -type f'
+
+  " Windows
+  let g:zenfinder_command = 'dir %s /-n /b /s /a-d'
+<
   
 vim:tw=78:ts=8:ft=help:norl:

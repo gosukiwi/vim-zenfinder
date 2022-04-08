@@ -15,8 +15,11 @@ For example, you could run a replace across several files:
 :ldo %s/replace this/with this/g
 ```
 
+See the [doc/zenfinder.txt](help) file for the complete documentation! `:help
+zenfinder`.
+
 ## Minimal
-Zenfinder is ~100 lines of Vimscript. It uses `ripgrep` for blazing fast file
+Zenfinder is ~200 lines of Vimscript. It uses `ripgrep` for blazing fast file
 listing (respecting things like `.gitignore`), as well as Vim's built-in
 `matchfuzzy` function to quickly search the results.
 
@@ -41,25 +44,5 @@ let g:zenfinder_command = 'dir %s /-n /b /s /a-d'
 # Installation
 
 ```vimscript
-" optional, this is the default value
-let g:zenfinder_command = 'rg %s --files --color=never --glob ""'
-
-" the example assumes <leader> is mapped to something useful, like spacebar
-nnoremap <silent> <leader>f :Zfind<CR>
-nnoremap <silent> <leader>b :Zfind!<CR>
+Plug 'gosukiwi/vim-zenfinder'
 ```
-
-# Usage
-Trigger with your mapping, or just using `:Zenfinder files` or
-`:Zenfinder buffers`.
-
-Navigate your files by typing, to fuzzy find and filter the search, choose the
-current file with `<C-j>` and `<C-k>` (`<C-n>` and `<C-p>` are also
-available), `:` to enter command line mode, `ENTER` to navigate into the file.
-
-You can also use `<C-Tab>` to toggle between Zenfinder's prompt and the
-location list, where you can use all your regular location list mappings,
-commands and whatnot.
-
-Besides typing, you can also filter the currently displayed files with
-`:Filter` and `:Reject`.
