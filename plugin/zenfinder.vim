@@ -15,6 +15,7 @@ packadd! cfilter
 let s:files = []
 let s:prompt = ''
 let s:is_prompt_open = 0
+let s:prompt_window_id = 0
 
 function! s:AliasCommand(from, to) abort
   exec 'cnoreabbrev <expr> '.a:from
@@ -41,7 +42,7 @@ endfunction
 
 function! s:TriggerPromptChanged() abort
   let s:prompt = getline('.')[3:]
-  let matched_files = s:FindFiles(s:prompt)[:10] " 10 first entries
+  let matched_files = s:FindFiles(s:prompt)[:100] " 100 first entries
   " See `:help setloclist` for info about this hash format
   let s:formatted_files = map(matched_files, { index, file -> { 'filename': file, 'lnum': 1 } })
 
@@ -53,8 +54,7 @@ function! s:FocusLL() abort
 endfunction
 
 function! s:FocusPrompt() abort
-  call win_gotoid(s:location_window_id)
-  execute "normal \<C-w>j"
+  call win_gotoid(s:prompt_window_id)
 endfunction
 
 function! s:ClosePrompt() abort
@@ -145,19 +145,21 @@ function! s:OpenPrompt(type) abort
   lexpr []
   botright lopen
   let s:location_window_id = win_getid()
-  nnoremap <buffer><silent> <C-Tab> <C-w>ja
-  nmap <buffer><silent> <BS> <C-w>ja<Esc>
-  nmap <buffer><silent> <Esc> <C-w>ja<Esc>
-  nmap <buffer><silent> q <C-w>ja<Esc>
-  nmap <buffer><silent> a <C-w>ja
-  nmap <buffer><silent> A <C-w>ja
-  nmap <buffer><silent> i <C-w>ja
-  nmap <buffer><silent> I <C-w>ja
-  nmap <buffer><silent> C <C-w>ja
+  nnoremap <buffer><silent> <C-Tab> :call <SID>FocusPrompt()<CR>a
+  nmap <buffer><silent> <BS> :call <SID>FocusPrompt()<CR><Esc>
+  nmap <buffer><silent> <Esc> :call <SID>FocusPrompt()<CR><Esc>
+  nmap <buffer><silent> q :call <SID>FocusPrompt()<CR><Esc>
+  nmap <buffer><silent> a :call <SID>FocusPrompt()<CR>a
+  nmap <buffer><silent> A :call <SID>FocusPrompt()<CR>a
+  nmap <buffer><silent> i :call <SID>FocusPrompt()<CR>a
+  nmap <buffer><silent> I :call <SID>FocusPrompt()<CR>a
+  nmap <buffer><silent> C :call <SID>FocusPrompt()<CR>a
+  nmap <buffer><silent><nowait> c :call <SID>FocusPrompt()<CR>a
   " nmap <buffer><silent> <C-w>k <Esc>
 
   " pseudo-prompt
   botright new
+  let s:prompt_window_id = win_getid()
   let s:previous_status = &laststatus
   setlocal laststatus=0
   resize 1
@@ -181,8 +183,8 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer><silent> <C-k> <C-o>:call <SID>RotateActive(0)<CR>
   inoremap <buffer><silent> <C-n> <C-o>:call <SID>RotateActive(1)<CR>
   inoremap <buffer><silent> <C-p> <C-o>:call <SID>RotateActive(0)<CR>
-  inoremap <buffer><silent> <C-Tab> <Esc><C-w>k
-  inoremap <buffer> : <Esc><C-w>k:
+  inoremap <buffer><silent> <C-Tab> <Esc>:call <SID>FocusLL()<CR>
+  inoremap <buffer> : <Esc>:call <SID>FocusLL()<CR>:
 endfunction
 
 command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
