@@ -232,9 +232,9 @@ function! s:OpenPrompt(type) abort
   botright lopen
   let s:location_window_id = win_getid()
   nnoremap <buffer><silent> <C-Tab> :call <SID>FocusPrompt()<CR>a
-  nmap <buffer><silent> <BS> :call <SID>FocusPrompt()<CR><Esc>
-  nmap <buffer><silent> <Esc> :call <SID>FocusPrompt()<CR><Esc>
-  nmap <buffer><silent> q :call <SID>FocusPrompt()<CR><Esc>
+  nmap <buffer><silent> <BS> :call <SID>FocusPrompt()<CR>a<Esc>
+  nmap <buffer><silent> <Esc> :call <SID>FocusPrompt()<CR>a<Esc>
+  nmap <buffer><silent> q :call <SID>FocusPrompt()<CR>a<Esc>
   nmap <buffer><silent> a :call <SID>FocusPrompt()<CR>a
   nmap <buffer><silent> A :call <SID>FocusPrompt()<CR>a
   nmap <buffer><silent> i :call <SID>FocusPrompt()<CR>a
@@ -269,6 +269,7 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer><silent> <C-k> <C-o>:call <SID>RotateActive(0)<CR>
   inoremap <buffer><silent> <C-n> <C-o>:call <SID>RotateActive(1)<CR>
   inoremap <buffer><silent> <C-p> <C-o>:call <SID>RotateActive(0)<CR>
+  inoremap <buffer><silent> <C-g> <C-o>:call <SID>RotateActive(0)<CR>
   inoremap <buffer><silent> <C-Tab> <Esc>:call <SID>FocusLL()<CR>
   inoremap <buffer> : <Esc>:call <SID>FocusLL()<CR>:
 endfunction
