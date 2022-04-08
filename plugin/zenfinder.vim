@@ -135,7 +135,8 @@ function! s:ClosePrompt() abort
 endfunction
 
 function! s:RunPrompt() abort
-  silent ll
+  call s:FocusLL()
+  execute "normal \<CR>"
   call s:ClosePrompt()
 endfunction
 
