@@ -48,6 +48,10 @@ function! s:TriggerPromptChanged() abort
   call setloclist(s:location_window_id, s:formatted_files, 'r')
 endfunction
 
+function! s:FocusLL() abort
+  call win_gotoid(s:location_window_id)
+endfunction
+
 function! s:FocusPrompt() abort
   call win_gotoid(s:location_window_id)
   execute "normal \<C-w>j"
@@ -100,19 +104,21 @@ endfunction
 
 function! s:Reject(pattern) abort
   if !s:is_prompt_open
-    echo ":Zenfinder => Prompt is closed"
+    echo ":Zenfinder => Finder closed"
     return
   endif
 
+  call s:FocusLL()
   execute "Lfilter! " . a:pattern
 endfunction
 
 function! s:Filter(pattern) abort
   if !s:is_prompt_open
-    echo ":Zenfinder => Prompt is closed"
+    echo ":Zenfinder => Finder closed"
     return
   endif
 
+  call s:FocusLL()
   execute "Lfilter " . a:pattern
 endfunction
 
