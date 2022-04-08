@@ -138,7 +138,7 @@ endfunction
 
 function! s:RunPrompt() abort
   call s:FocusLL()
-  ll
+  .ll
   call s:ClosePrompt()
 endfunction
 
