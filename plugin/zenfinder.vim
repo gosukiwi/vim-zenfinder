@@ -41,7 +41,7 @@ function! s:ClosePrompt() abort
   let s:prompt = ''
   execute "setlocal laststatus=" . s:previous_status
   q!
-  cclose
+  lclose
 endfunction
 
 function! s:RunPrompt() abort
@@ -133,4 +133,4 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer> <C-Tab> <Esc><C-w>k
 endfunction
 
-command! -bang Zfind call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
+command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
