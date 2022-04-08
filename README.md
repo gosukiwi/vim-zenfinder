@@ -1,18 +1,17 @@
 # Zenfinder
-A minimalistic, file-centric fuzzy finder for Vim, using the quickfix list.
+A minimalistic, file-centric fuzzy finder for Vim, using the location list.
 
-Vim's quickfix list is a list of file positions. `:Zenfinder` will allow you
-to fuzzy find the files in your current working directory, and populate the
-quickfix list with the results. You can then use regular Vim commands to
-manipulate the quickfix list, like `:cdo`.
+The location list was made to be a list of file positions. This finder will
+allow you to fuzzy find your files, and populate the location list with the
+results. You can then use regular Vim commands to manipulate the location
+list, mostly `:ldo`.
 
 For example, you could run a replace across several files:
 
 ```
-:Zenfinder # open zenfinder (you can also use a mapping, like <Space>f)
-.md        # select all markdown files
-:          # enter command line mode
-:cdo %s/replace this/with this/g
+.md # select all markdown files
+:   # enter command line mode
+:ldo %s/replace this/with this/g
 ```
 
 ## Minimal
@@ -45,8 +44,8 @@ let g:zenfinder_command = 'dir %s /-n /b /s /a-d'
 let g:zenfinder_command = 'rg %s --files --color=never --glob ""'
 
 " the example assumes <leader> is mapped to something useful, like spacebar
-nnoremap <silent> <leader>f :Zenfinder<CR>
-nnoremap <silent> <leader>b :Zenfinder!<CR>
+nnoremap <silent> <leader>f :Zfind<CR>
+nnoremap <silent> <leader>b :Zfind!<CR>
 ```
 
 # Usage

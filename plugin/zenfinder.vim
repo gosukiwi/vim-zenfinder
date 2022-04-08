@@ -33,7 +33,7 @@ function! s:TriggerPromptChanged() abort
   " See `:help setloclist` for info about this mapping
   let s:formatted_files = map(matched_files, { index, file -> { 'filename': file, 'lnum': 1 } })
 
-  call setqflist(s:formatted_files, 'r')
+  call setloclist(s:location_window_id, s:formatted_files, 'r')
 endfunction
 
 function! s:ClosePrompt() abort
@@ -46,7 +46,7 @@ endfunction
 
 function! s:RunPrompt() abort
   call s:ClosePrompt()
-  silent cc
+  silent ll
 endfunction
 
 function! s:PromptHandleBackspace() abort
@@ -77,7 +77,7 @@ function! s:RotateActive(clockwise) abort
     let s:formatted_files = extend([head], tail)
   endif
 
-  call setqflist(s:formatted_files, 'r')
+  call setloclist(s:location_window_id, s:formatted_files, 'r')
 endfunction
 
 function! s:OpenPrompt(type) abort
@@ -96,9 +96,11 @@ function! s:OpenPrompt(type) abort
     return
   endif
 
-  " quickfix list
-  copen
-  nnoremap <buffer><silent> <C-Tab> <C-w>ja
+  " location list
+  lexpr []
+  lopen
+  let s:location_window_id = win_getid()
+  nnoremap <silent><buffer> <C-Tab> <C-w>ja
   nmap <buffer><silent> <BS> <C-w>ja<Esc>
   nmap <buffer><silent> <Esc> <C-w>ja<Esc>
   nmap <buffer><silent> q <C-w>ja<Esc>
@@ -131,4 +133,4 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer> <C-Tab> <Esc><C-w>k
 endfunction
 
-command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
+command! -bang Zfind call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
