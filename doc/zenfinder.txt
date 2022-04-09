@@ -38,32 +38,45 @@ Example 1:
 >
   <leader>f            Invoke :Zenfinder, in file mode
   appmodperson         Type to fuzzy find the file in `app/models/person.rb`
-                       Notice that its the only matching file
+                       The file is at the top of the list
   <CR>                 Press ENTER, opening the file in the current active
                        window
 <
 Example 2:
 >
   :zf                  Invoke :Zenfinder, in file mode
-  appmodperson         Type to fuzzy find the file in `app/models/person.rb`
-                       Notice that it also matches `app/models/person.rb.old`
+  appmod.rb            Type to fuzzy find all files in `app/models/*.rb`
+                       Notice that it also a bunch of `.rb.old` files
   :                    Press `:`, enter in command line mode
   :Zreject .old        Reject all entries in the location file that match `.old`
-  :ldo vsp             Open all in vertical splits
+  :zvsp                Open remaining files in vertical splits
 <
 Example 3:
 >
-  <leader>b            Invoke :Zenfinder!, in buffer mode
-  .md                  Type .md, and find all markdown files
-  :                    Enter command line mode
-  :ldo %s/replace this/with this/g
+  :zf                  Invoke :Zenfinder, in file mode
+  appmod.rb            Type to fuzzy find all files in `app/models/*.rb`
+                       Notice that it also a bunch of `.rb.old` files
+  <C-Tab>              Go to location list window
+  j                    Move around with j and k, as usual
+                       Position cursor over `app/models/person.rb.old`
+  x                    Press x to filter out the current file under cursor
+                       Repeat as many times as needed
+  :zsp                 Open all in horizontal splits
+<
+Example 4:
+>
+  <leader>b                          Invoke :Zenfinder!, in buffer mode
+  <C-r>                              Use regex mode
+  .md$                               Match all files ending in '.md'
+  :                                  Enter command line mode
+  :ldo %s/replace this/with this/g   Run a replace command in all remaining files
 <
 ================================================================================
  2. COMMANDS                                                  *zenfinder-commands*
 
 The following commands are provided by Zenfinder:
 
-*:Zenfinder* - alias *:ze* - opens the finder windows (the prompt and the
+*:Zenfinder* [!] - alias *:ze* - opens the finder windows (the prompt and the
 location list).
 
 *:Zreject* - alias *:zr* - rejects all files matching the given pattern from the
