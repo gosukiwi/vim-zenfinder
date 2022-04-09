@@ -354,6 +354,7 @@ function! s:OpenZenfinder(...) abort
   nnoremap <buffer><silent><nowait> c :call <SID>FocusPrompt()<CR>a
   nnoremap <buffer><silent> x :call <SID>LLRemoveAtCursor()<CR>
   nnoremap <buffer><silent> d :call <SID>LLRemoveAtCursor()<CR>
+  cnoreabbrev <buffer> q Zclose
 
   " pseudo-prompt
   botright new
