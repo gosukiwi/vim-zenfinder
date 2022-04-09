@@ -110,6 +110,7 @@ function! s:ToggleRegexMode() abort
   call s:TriggerPromptChanged()
 endfunction
 
+" Returns: List of file paths
 function! s:FindFiles(pattern) abort
   if a:pattern == '' | return copy(s:files) | endif
 
@@ -120,6 +121,7 @@ function! s:FindFiles(pattern) abort
   return matchfuzzy(s:files, a:pattern)
 endfunction
 
+" Returns: List of bufnr
 function! s:FindBuffers(pattern) abort
   if a:pattern == '' | return copy(s:buffers) | endif
 
