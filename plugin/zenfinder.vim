@@ -1,5 +1,5 @@
 " [zenfinder]
-" Depends on: <ripgrep>, [cfilter] (built-in)
+" Depends on: <ripgrep> (optional), [cfilter] (built-in)
 " ==============================================================================
 if exists('g:zenfinder_loaded') | finish | endif
 let g:zenfinder_loaded = 1
@@ -14,14 +14,14 @@ if !exists('g:zenfinder_max_ll_files')
   let g:zenfinder_max_ll_files = 9
 endif
 
-" Add cfilter if it wasn't added already
-packadd! cfilter
-
 let s:files = []
 let s:prompt = ''
 let s:is_prompt_open = 0
 let s:prompt_window_id = 0
 let s:match_mode = 'fuzzy'
+
+" Add cfilter if it wasn't added already
+packadd! cfilter
 
 " VENDOR
 " ==============================================================================
