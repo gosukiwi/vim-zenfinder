@@ -199,7 +199,7 @@ function! s:SetLL(files) abort
   call setloclist(s:location_window_id, a:files, 'r')
 
   let currentmode = s:match_mode == 'regex' ? 'regex' : 'fuzzy'
-  let title = '[Zenfinder] [' . currentmode . ']'
+  let title = '[Zenfinder] [' . currentmode . '] [' . getcwd() . ']'
 	call setloclist(s:location_window_id, [], 'a', { 'title' : title })
 endfunction
 
@@ -344,6 +344,7 @@ function! s:OpenZenfinder(type) abort
   let s:previous_status = &laststatus
   setlocal laststatus=0
   resize 1
+  setlocal winfixheight
   setlocal nonu
   setlocal nornu
   set buftype=nofile
