@@ -7,7 +7,8 @@ Help on using zenfinder                                               *zenfinder
 
     1. USAGE ........................................ |zenfinder-intro|
     2. COMMANDS ..................................... |zenfinder-commands|
-    3. CONFIGURATION ................................ |zenfinder-configuration|
+    3. MAPPINGS ..................................... |zenfinder-mappings|
+    4. CONFIGURATION ................................ |zenfinder-configuration|
 
 ================================================================================
  1. USAGE                                                        *zenfinder-intro*
@@ -78,7 +79,43 @@ horizontal split each.
 instead.
 
 ================================================================================
- 3. CONFIGURATION                                        *zenfinder-configuration*
+ 3. MAPPINGS                                                  *zenfinder-mappings*
+
+Zenfinder is divided in two windows: The prompt window, and the location list
+window.
+
+Prompt mappings:
+>
+  <Esc>       Close Zenfinder
+  <CR>        Open current file
+  <BS>        If nothing is typed, close Zenfinder
+  <C-j>       Scroll down
+  <C-n>       Scroll down
+  <C-k>       Scroll up
+  <C-p>       Scroll up
+  <C-Tab>     Toggle between prompt and location list windows
+  :           Execute command
+  <C-r>       Toggle between fuzzy and regex mode
+<
+
+Location list mappings:
+>
+  <CR>        Open file under cursor
+  <C-Tab>     Toggle between prompt and location list windows
+  <BS>        Close Zenfinder
+  <Esc>       Close Zenfinder
+  q           Close Zenfinder
+  a           Go to prompt
+  A           Go to prompt
+  i           Go to prompt
+  I           Go to prompt
+  C           Go to prompt
+  c           Go to prompt
+  x           Remove file under cursor from location list
+  d           Remove file under cursor from location list
+<
+================================================================================
+ 4. CONFIGURATION                                        *zenfinder-configuration*
 
 You can set the *g:zenfinder_command* variable to whatever command you want to
 use, if you don't want to use `ripgrep`.
