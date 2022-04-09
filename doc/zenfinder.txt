@@ -81,6 +81,7 @@ files, this is enough, but you can change this to whatever you want with the
 *zenfinder_max_ll_files* variable:
 
 >
+  let g:zenfinder_max_ll_files = 9     " default
   let g:zenfinder_max_ll_files = 100   " 100 files max
   let g:zenfinder_max_ll_files = -1    " no limit
   
