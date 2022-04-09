@@ -248,8 +248,7 @@ function! s:OpenAllInSplit(vertical) abort
   let command = a:vertical == 1 ? 'vsp' : 'sp'
   let items = getloclist(s:location_window_id)
   for item in items
-    let bufinfo = getbufinfo(item.bufnr)[0]
-    let path = bufinfo.name
+    let path = getbufinfo(item.bufnr)[0].name
     silent execute command . ' ' . path
   endfor
 
