@@ -92,14 +92,17 @@ function! s:AliasCommand(from, to) abort
 endfunction
 
 function! s:LoadFiles() abort
+  let s:find_mode = 'files'
   let cwd = escape(getcwd(), "\\")
   let command = substitute(g:zenfinder_command, '%s', cwd, '')
   let s:files = systemlist(command)->map({ index, file -> substitute(file, cwd, '', '')[1:] })
 endfunction
 
 function! s:LoadBuffers() abort
-  let filelist = getbufinfo({'buflisted': 1})->map({ index, buffer -> buffer.name})
-  let s:files = filelist
+  let s:find_mode = 'buffers'
+  let s:buffers = getbufinfo({ 'buflisted': 1 })
+        \ ->filter({ index, buffer -> fnamemodify(getbufinfo(buffer.bufnr)[0].name, ':p:h') != getbufinfo(buffer.bufnr)[0].name[:-2] })
+        \ ->map({ index, buffer -> buffer.bufnr })
 endfunction
 
 function! s:ToggleRegexMode() abort
@@ -121,13 +124,31 @@ function! s:FindFiles(pattern) abort
   return matchfuzzy(s:files, a:pattern)
 endfunction
 
+function! s:FindBuffers(pattern) abort
+  if a:pattern == '' | return copy(s:buffers) | endif
+
+  if s:mode == 'regex'
+    return filter(copy(s:buffers), { index, file -> file =~ a:pattern })
+  endif
+
+  return matchfuzzy(s:buffers, a:pattern)
+endfunction
+
 function! s:TriggerPromptChanged() abort
   let s:prompt = getline('.')[3:]
-  let matched_files = s:FindFiles(s:prompt)[:g:zenfinder_max_ll_files]
-  " See `:help setloclist` for info about this hash format
-  let s:formatted_files = map(matched_files, { index, file -> { 'filename': file, 'lnum': 1 } })
+  if s:find_mode == 'files'
+    let matched_files = s:FindFiles(s:prompt)[:g:zenfinder_max_ll_files]
+    " See `:help setloclist` for info about this hash format
+    let s:formatted_files = map(matched_files, { index, file -> { 'filename': file, 'lnum': 1 } })
 
-  call s:SetLL(s:formatted_files)
+    call s:SetLL(s:formatted_files)
+  else " match buffers
+    let matched_buffers = s:FindBuffers(s:prompt)[:g:zenfinder_max_ll_files]
+    " See `:help setloclist` for info about this hash format
+    let s:formatted_buffers = map(matched_buffers, { index, bufnr -> { 'bufnr': bufnr, 'lnum': 1 } })
+
+    call s:SetLL(s:formatted_buffers)
+  endif
 endfunction
 let s:ThrottledTriggerPromptChanged = s:Throttle(function('s:TriggerPromptChanged'), 50, 1)
 
@@ -185,18 +206,29 @@ function! s:SetLL(files) abort
 endfunction
 
 function! s:RotateActive(clockwise) abort
-  let items = copy(s:formatted_files)
+  if s:find_mode == 'file'
+    let items = copy(s:formatted_files)
+  else
+    let items = copy(s:formatted_buffers)
+  endif
+
   if a:clockwise == 1
     let head = items[0]
     let tail = items[1:]
-    let s:formatted_files = extend(tail, [head])
+    let newlist = extend(tail, [head])
   else
     let head = items[-1]
     let tail = items[:-2]
-    let s:formatted_files = extend([head], tail)
+    let newlist = extend([head], tail)
   endif
 
-  call s:SetLL(s:formatted_files)
+  if s:find_mode == 'file'
+    let s:formatted_files = newlist
+  else
+    let s:formatted_buffers = newlist
+  endif
+
+  call s:SetLL(newlist)
 endfunction
 
 function! s:Reject(pattern) abort
@@ -236,8 +268,11 @@ function! FormatLocationList(info)
   for item in items
     let bufinfo = getbufinfo(item.bufnr)[0]
     let cwd = escape(getcwd(), "\\")
-    let filename = substitute(bufinfo.name, cwd, '.', '')
+    let filename = fnamemodify(bufinfo.name, ':.')
     let filename = substitute(filename, '\\', '/', 'g')
+    if filename == ''
+      let filename = '[No Name ' . bufinfo.bufnr . ']'
+    endif
     call add(formatted_items, filename)
   endfor
 
@@ -273,7 +308,7 @@ function! s:OpenZenfinder(type) abort
     call s:LoadFiles()
   endif
 
-  if len(s:files) == 0
+  if (s:find_mode == 'files' && len(s:files) == 0) || (s:find_mode == 'buffers' && len(s:buffers) == 0)
     let s:is_prompt_open = 0
     echo ':Zenfinder => No entries.'
     return
