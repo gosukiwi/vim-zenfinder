@@ -127,8 +127,7 @@ function! s:TriggerPromptChanged() abort
   " See `:help setloclist` for info about this hash format
   let s:formatted_files = map(matched_files, { index, file -> { 'filename': file, 'lnum': 1 } })
 
-  call setloclist(s:location_window_id, s:formatted_files, 'r')
-	call setloclist(s:location_window_id, [], 'a', {'title' : 'Zenfinder'})
+  call s:SetLL(s:formatted_files)
 endfunction
 let s:ThrottledTriggerPromptChanged = s:Throttle(function('s:TriggerPromptChanged'), 50, 1)
 
@@ -177,6 +176,14 @@ function! s:PromptHandleCW() abort
   return ''
 endfunction
 
+function! s:SetLL(files) abort
+  call setloclist(s:location_window_id, a:files, 'r')
+
+  let currentmode = s:mode == 'regex' ? 'regex' : 'fuzzy'
+  let title = '[Zenfinder] [' . currentmode . ']'
+	call setloclist(s:location_window_id, [], 'a', { 'title' : title })
+endfunction
+
 function! s:RotateActive(clockwise) abort
   let items = copy(s:formatted_files)
   if a:clockwise == 1
@@ -189,8 +196,7 @@ function! s:RotateActive(clockwise) abort
     let s:formatted_files = extend([head], tail)
   endif
 
-  call setloclist(s:location_window_id, s:formatted_files, 'r')
-	call setloclist(s:location_window_id, [], 'a', {'title' : 'Zenfinder'})
+  call s:SetLL(s:formatted_files)
 endfunction
 
 function! s:Reject(pattern) abort
