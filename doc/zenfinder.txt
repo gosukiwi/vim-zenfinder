@@ -26,6 +26,7 @@ buffers`. You can also use *:zf* as an alias for |:Zenfinder|.
 - Use `:` to enter command line mode
 - Filter the location list with `:Zfilter` and `:Zreject`
 - Use `:ldo` to perform a command on all visible files
+- Toggle fuzzy/regexp mode with `<C-r>`
 
 Here are a few usage examples:
 

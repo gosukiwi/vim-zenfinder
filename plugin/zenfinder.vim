@@ -21,6 +21,7 @@ let s:files = []
 let s:prompt = ''
 let s:is_prompt_open = 0
 let s:prompt_window_id = 0
+let s:mode = 'fuzzy'
 
 " VENDOR
 " ==============================================================================
@@ -101,8 +102,21 @@ function! s:LoadBuffers() abort
   let s:files = filelist
 endfunction
 
+function! s:ToggleRegexMode() abort
+  if s:mode == 'regex'
+    let s:mode = 'fuzzy'
+  else
+    let s:mode = 'regex'
+  endif
+  call s:TriggerPromptChanged()
+endfunction
+
 function! s:FindFiles(pattern) abort
   if a:pattern == '' | return copy(s:files) | endif
+
+  if s:mode == 'regex'
+    return filter(copy(s:files), { index, file -> file =~ a:pattern })
+  endif
 
   return matchfuzzy(s:files, a:pattern)
 endfunction
@@ -281,6 +295,7 @@ function! s:OpenPrompt(type) abort
   inoremap <buffer><silent> <C-p> <C-o>:call <SID>RotateActive(0)<CR>
   inoremap <buffer><silent> <C-Tab> <Esc>:call <SID>FocusLL()<CR>
   inoremap <buffer> : <Esc>:call <SID>FocusLL()<CR>:
+  inoremap <buffer> <C-r> <C-o>:call <SID>ToggleRegexMode()<CR>
 endfunction
 
 " configure the custom formatting function
