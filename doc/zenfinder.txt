@@ -6,7 +6,8 @@ License: Same terms as Vim itself (see |license|)
 Help on using zenfinder                                               *zenfinder*
 
     1. USAGE ........................................ |zenfinder-intro|
-    2. CONFIGURATION ................................ |zenfinder-configuration|
+    2. COMMANDS ..................................... |zenfinder-commands|
+    3. CONFIGURATION ................................ |zenfinder-configuration|
 
 ================================================================================
  1. USAGE                                                        *zenfinder-intro*
@@ -55,9 +56,29 @@ Example 3:
   .md                  Type .md, and find all markdown files
   :                    Enter command line mode
   :ldo %s/replace this/with this/g
-<
+
 ================================================================================
- 2. CONFIGURATION                                        *zenfinder-configuration*
+ 2. COMMANDS                                                  *zenfinder-commands*
+
+The following commands are provided by Zenfinder:
+
+*:Zenfinder* - alias *:zf* - opens the finder windows (the prompt and the
+location list).
+
+*:Zreject* - alias *:zr* - rejects all files matching the given pattern from the
+location list. Opposite of |:Zfilter|.
+
+*:Zfilter* - alias *:zf* - selects all files matching the given pattern from the
+location list. Opposite of |:Zreject|.
+
+*:Zsplit* - alias *:zsp* - opens all the files in the location list, in one
+horizontal split each.
+
+*:Zvsplit* - alias *:zvsp* - same as |:Zsplit| but using a vertical split
+instead.
+
+================================================================================
+ 3. CONFIGURATION                                        *zenfinder-configuration*
 
 You can set the *g:zenfinder_command* variable to whatever command you want to
 use, if you don't want to use `ripgrep`.

@@ -245,6 +245,11 @@ function! FormatLocationList(info)
 endfunction
 
 function! s:OpenAllInSplit(vertical) abort
+  if !s:is_prompt_open
+    echo ":Zenfinder => Finder closed"
+    return
+  endif
+
   let command = a:vertical == 1 ? 'vsp' : 'sp'
   let items = getloclist(s:location_window_id)
   for item in items
