@@ -75,7 +75,7 @@ function! s:Throttle(fn, wait, ...) abort
 endfunction
 " ==============================================================================
 
-function s:EmptyLLAndWipeBuffers()
+function s:WipeUnlistedBuffersFromLL()
   let items = getloclist(s:location_window_id)
   for item in items
     let buffer = item.bufnr
@@ -168,11 +168,22 @@ function! s:CloseZenfinder() abort
   call s:FocusPrompt()
   execute "setlocal laststatus=" . s:previous_status
   bwipeout
-  call s:EmptyLLAndWipeBuffers()
+  call s:WipeUnlistedBuffersFromLL()
 
   call s:FocusLL()
   lexpr []
-  lclose
+  try
+    lclose
+  catch " location list was the last buffer
+    new
+    if exists(':Dirvish')
+      execute 'Dirvish ' . getcwd()
+    else
+      execute 'Explore ' . getcwd()
+    endif
+    call s:FocusLL()
+    lclose
+  endtry
 endfunction
 
 function! s:RunPrompt() abort
