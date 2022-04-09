@@ -140,13 +140,11 @@ function! s:TriggerPromptChanged() abort
     let matched_files = s:FindFiles(s:prompt)[:g:zenfinder_max_ll_files]
     " See `:help setloclist` for info about this hash format
     let s:formatted_files = map(matched_files, { index, file -> { 'filename': file, 'lnum': 1 } })
-
     call s:SetLL(s:formatted_files)
   else " match buffers
     let matched_buffers = s:FindBuffers(s:prompt)[:g:zenfinder_max_ll_files]
     " See `:help setloclist` for info about this hash format
     let s:formatted_buffers = map(matched_buffers, { index, bufnr -> { 'bufnr': bufnr, 'lnum': 1 } })
-
     call s:SetLL(s:formatted_buffers)
   endif
 endfunction
@@ -206,7 +204,7 @@ function! s:SetLL(files) abort
 endfunction
 
 function! s:RotateActive(clockwise) abort
-  if s:find_mode == 'file'
+  if s:find_mode == 'files'
     let items = copy(s:formatted_files)
   else
     let items = copy(s:formatted_buffers)
@@ -222,7 +220,7 @@ function! s:RotateActive(clockwise) abort
     let newlist = extend([head], tail)
   endif
 
-  if s:find_mode == 'file'
+  if s:find_mode == 'files'
     let s:formatted_files = newlist
   else
     let s:formatted_buffers = newlist
@@ -253,10 +251,16 @@ endfunction
 
 function! s:LLRemoveAtCursor()
   let linenum = line('.')
-  let items = copy(s:formatted_files)
-  let s:formatted_files = filter(items, { index -> (index + 1) != linenum })
-
-  call s:SetLL(s:formatted_files)
+  
+  if s:find_mode == 'files'
+    let items = copy(s:formatted_files)
+    let s:formatted_files = filter(items, { index -> (index + 1) != linenum })
+    call s:SetLL(s:formatted_files)
+  else
+    let items = copy(s:formatted_buffers)
+    let s:formatted_buffers = filter(items, { index -> (index + 1) != linenum })
+    call s:SetLL(s:formatted_buffers)
+  endif
 endfunction
 
 function! FormatLocationList(info)
