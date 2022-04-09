@@ -163,7 +163,8 @@ function! s:CloseZenfinder() abort
   if s:is_prompt_open == 0 | return | endif
   let s:is_prompt_open = 0
 
-  let s:prompt = ''
+  let s:match_mode = 'fuzzy' " reset mode
+  let s:prompt = ''          " reset prompt
   call s:FocusPrompt()
   execute "setlocal laststatus=" . s:previous_status
   bwipeout

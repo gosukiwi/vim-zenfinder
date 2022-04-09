@@ -25,6 +25,18 @@ Execute (utils):
     return len(copy(a:array)->filter('v:val =~ a:regex')) > 0
   endfunction
 
+  function! GetLLFiles() abort
+    return map(GetLLItems(), 'getbufinfo(v:val.bufnr)[0].name')
+  endfunction
+
+  " Because Vader uses `execute normal ...` in `Do` blocks, it doesn't trigger
+  " the TextChangedI autocommand, which the Zenfinder's prompt uses. This
+  " function will manually make Zenfinder pick up the changes once the command
+  " is done executing.
+  function! NotifyPromptChanged() abort
+    call Zenfinder_TriggerPromptChanged()
+  endfunction
+
 " [test] =======================================================================
 Do (Open zenfinder):
   :Zenfinder\<CR>
@@ -56,32 +68,32 @@ Then (It should open location list):
 Do (Show files in directory):
   :Zenfinder t/fixtures\<CR>
 
-Then (It should all files):
-  let files = map(GetLLItems(), 'getbufinfo(v:val.bufnr)[0].name')
+Then (It should show all files):
+  let files = GetLLFiles()
   Assert ArrayIncludes(files, 'a.txt$')
   Assert ArrayIncludes(files, 'b.txt$')
   Assert ArrayIncludes(files, 'c.md$')
   Assert ArrayIncludes(files, 'text.md$')
 
 " [test] =======================================================================
-Do (fuzzy find):
+Do (Fuzzy find):
   :Zenfinder t/fixtures\<CR>fixtxt
 
-Then (It should all files):
-  call Zenfinder_TriggerPromptChanged()
-  let files = map(GetLLItems(), 'getbufinfo(v:val.bufnr)[0].name')
+Then (It should show only files matching "fixtxt"):
+  call NotifyPromptChanged()
+  let files = GetLLFiles()
   Assert ArrayIncludes(files, 'a.txt$')
   Assert ArrayIncludes(files, 'b.txt$')
   Assert !ArrayIncludes(files, 'c.md$')
   Assert ArrayIncludes(files, 'text.md$')
 
 " [test] =======================================================================
-Do (regex find):
+Do (Regex find):
   :Zenfinder t/fixtures\<CR>\<C-r>md$
 
-Then (It should all files):
-  call Zenfinder_TriggerPromptChanged()
-  let files = map(GetLLItems(), 'getbufinfo(v:val.bufnr)[0].name')
+Then (It should only files matching /md$/):
+  call NotifyPromptChanged()
+  let files = GetLLFiles()
   Assert !ArrayIncludes(files, 'a.txt$')
   Assert !ArrayIncludes(files, 'b.txt$')
   Assert ArrayIncludes(files, 'c.md$')
