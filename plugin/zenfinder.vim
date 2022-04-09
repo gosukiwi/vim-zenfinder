@@ -291,9 +291,21 @@ function! s:OpenAllInSplit(vertical) abort
 
   let command = a:vertical == 1 ? 'vsp' : 'sp'
   let items = getloclist(s:location_window_id)
+  if a:firstline == a:lastline
+    let fromindex = 0
+    let toindex = len(items)
+  else
+    let fromindex = a:firstline - 1
+    let toindex = a:lastline - 1
+  endif
+
+  let index = 0
   for item in items
-    let path = getbufinfo(item.bufnr)[0].name
-    silent execute command . ' ' . path
+    if index >= fromindex && index <= toindex
+      let path = getbufinfo(item.bufnr)[0].name
+      silent execute command . ' ' . path
+    endif
+    let index += 1
   endfor
 
   call s:CloseZenfinder()
@@ -375,8 +387,8 @@ set quickfixtextfunc=FormatLocationList
 command! -bang Zenfinder call s:OpenZenfinder(expand('<bang>') == '!' ? 'buffers' : 'files')
 command! -nargs=1 Zreject call s:Reject(<f-args>)
 command! -nargs=1 Zfilter call s:Filter(<f-args>)
-command! Zsplit call s:OpenAllInSplit(0)
-command! Zvsplit call s:OpenAllInSplit(1)
+command! -range Zsplit <line1>,<line2>call s:OpenAllInSplit(0)
+command! -range Zvsplit <line1>,<line2>call s:OpenAllInSplit(1)
 call s:AliasCommand('ze', 'Zenfinder')
 call s:AliasCommand('zr', 'Zreject')
 call s:AliasCommand('zf', 'Zfilter')
