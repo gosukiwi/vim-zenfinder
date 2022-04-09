@@ -91,11 +91,11 @@ function! s:AliasCommand(from, to) abort
         \ .'? ("'.a:to.'") : ("'.a:from.'"))'
 endfunction
 
-function! s:LoadFiles() abort
+function! s:LoadFiles(path) abort
   let s:find_mode = 'files'
-  let cwd = escape(getcwd(), "\\")
-  let command = substitute(g:zenfinder_command, '%s', cwd, '')
-  let s:files = systemlist(command)->map({ index, file -> substitute(file, cwd, '', '')[1:] })
+  let path = escape(a:path, '\\')
+  let command = substitute(g:zenfinder_command, '%s', path, '')
+  let s:files = systemlist(command)->map({ index, file -> fnamemodify(file, ':.') })
 endfunction
 
 function! s:LoadBuffers() abort
@@ -311,17 +311,19 @@ function! s:OpenAllInSplit(vertical) abort
   call s:CloseZenfinder()
 endfunction
 
-function! s:OpenZenfinder(type) abort
+function! s:OpenZenfinder(...) abort
   if s:is_prompt_open
     call s:CloseZenfinder()
     return
   endif
   let s:is_prompt_open = 1
 
-  if a:type == 'buffers'
+  let type = get(a:000, 0)
+  let path = fnamemodify(get(a:000, 1, getcwd()), ':p')
+  if type == 'buffers'
     call s:LoadBuffers()
   else
-    call s:LoadFiles()
+    call s:LoadFiles(path)
   endif
 
   if (s:find_mode == 'files' && len(s:files) == 0) || (s:find_mode == 'buffers' && len(s:buffers) == 0)
@@ -390,7 +392,7 @@ endfunction
 " configure the custom formatting function
 set quickfixtextfunc=FormatLocationList
 
-command! -bang Zenfinder call s:OpenZenfinder(expand('<bang>') == '!' ? 'buffers' : 'files')
+command! -nargs=? -complete=file -bang Zenfinder call s:OpenZenfinder(expand('<bang>') == '!' ? 'buffers' : 'files', <f-args>)
 command! Zclose call s:CloseZenfinder()
 command! -nargs=1 Zreject call s:Reject(<f-args>)
 command! -nargs=1 Zfilter call s:Filter(<f-args>)
