@@ -78,7 +78,8 @@ The following commands are provided by Zenfinder:
 
 *:Zenfinder* [!] [{dir}] - alias *:ze* - opens the finder windows (the prompt
 and the location list). You can give it an optional argument which is the
-directory you want to use. Defaults to the current working directory.
+directory you want to use. Defaults to the current working directory. If `!`
+is used, it will browse buffers instead of files, and ignore `{dir}`.
 
 *:Zreject* - alias *:zr* - rejects all files matching the given pattern from the
 location list. Opposite of |:Zfilter|.
