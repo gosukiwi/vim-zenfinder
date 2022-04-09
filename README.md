@@ -20,7 +20,7 @@ nnoremap <silent> <leader>b :Zenfinder!<CR>
 # Usage
 Regular usage is as simple as:
 
-* Execute `:zf` or trigger a custom mapping in your config to open Zenfinder
+* Execute `:ze` or trigger a custom mapping in your config to open Zenfinder
 * Type in the prompt to fuzzy find your file (you can toggle regex mode with
   `<C-r>` if needed)
 * Navigate down and up with `<C-j>` and `<C-k>`
