@@ -337,6 +337,8 @@ function! s:OpenZenfinder(type) abort
   setlocal nonu
   setlocal nornu
   nnoremap <buffer><silent> <CR> :call <SID>RunPrompt()<CR>
+  nnoremap <buffer><silent> <C-a> :Zsplit<CR>
+  nnoremap <buffer><silent> <C-v> :Zvsplit<CR>
   nnoremap <buffer><silent> <C-Tab> :call <SID>FocusPrompt()<CR>a
   nnoremap <buffer><silent> <BS> :call <SID>CloseZenfinder()<CR>
   nnoremap <buffer><silent> <Esc> :call <SID>CloseZenfinder()<CR>
@@ -370,6 +372,8 @@ function! s:OpenZenfinder(type) abort
 
   inoremap <buffer><silent> <Esc> <Esc>:call <SID>CloseZenfinder()<CR>
   inoremap <buffer><silent> <CR> <Esc>:call <SID>RunPrompt()<CR>
+  inoremap <buffer><silent> <C-a> <C-o>:Zsplit<CR>
+  inoremap <buffer><silent> <C-v> <C-o>:Zvsplit<CR>
   imap <expr><buffer><silent> <BS> <SID>PromptHandleBackspace()
   imap <expr><buffer><silent> <C-w> <SID>PromptHandleCW()
   inoremap <buffer><silent> <C-j> <C-o>:call <SID>RotateActive(1)<CR>

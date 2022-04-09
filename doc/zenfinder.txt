@@ -109,6 +109,8 @@ Prompt mappings:
   <C-Tab>     Toggle between prompt and location list windows
   :           Execute command
   <C-r>       Toggle between fuzzy and regex mode
+  <C-a>       Split open all
+  <C-v>       Vertical split open all
 <
 
 Location list mappings:
@@ -126,6 +128,8 @@ Location list mappings:
   c           Go to prompt
   x           Remove file under cursor from location list
   d           Remove file under cursor from location list
+  <C-a>       Split open all
+  <C-v>       Vertical split open all
 <
 ================================================================================
  4. CONFIGURATION                                        *zenfinder-configuration*
