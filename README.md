@@ -22,8 +22,8 @@ positions. This finder focuses on on that interaction.
 Usage goes as follows:
 
 * Execute `:zf` or trigger a custom mapping in your config to open Zenfinder
-* Type in the prompt to fuzzy find your file (you can toggle regex mode here
-  if needed)
+* Type in the prompt to fuzzy find your file (you can toggle regex mode with
+  `<C-r>` if needed)
 * Navigate down and up with `<C-j>` and `<C-k>`
 * Once you see the file you want, you can press `ENTER` to open it
 
