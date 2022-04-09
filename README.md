@@ -31,7 +31,7 @@ you can:
 
 * Filter files with `:Zfilter` and `:Zreject`
 * Press `<C-Tab>` to toggle between the location list and the prompt
-* Press `x` or `d` to delete the file under the cursor from the list
+* Press `x` or `d` to delete the file under the cursor from the location list
 * Run commands on them with `:ldo` (ex: replace a string in all matched files)
 * Open those files with `:Zsplit` and `:Zvsplit`
 
