@@ -107,7 +107,7 @@ endfunction
 
 function! s:ToggleRegexMode() abort
   let s:match_mode = s:match_mode == 'regex' ? 'fuzzy' : 'regex'
-  call s:TriggerPromptChanged()
+  call Zenfinder_TriggerPromptChanged()
 endfunction
 
 " Returns: List of file paths
@@ -135,7 +135,7 @@ function! s:FindBuffers(pattern) abort
   return map(result, 'v:val.bufnr')
 endfunction
 
-function! s:TriggerPromptChanged() abort
+function! Zenfinder_TriggerPromptChanged() abort
   let s:prompt = getline('.')[3:]
   if s:find_mode == 'files'
     let matched_files = s:FindFiles(s:prompt)[:g:zenfinder_max_ll_files]
@@ -149,7 +149,7 @@ function! s:TriggerPromptChanged() abort
     call s:SetLL(s:formatted_buffers)
   endif
 endfunction
-let s:ThrottledTriggerPromptChanged = s:Throttle(function('s:TriggerPromptChanged'), 50, 1)
+let s:ThrottledTriggerPromptChanged = s:Throttle(function('Zenfinder_TriggerPromptChanged'), 50, 1)
 
 function! s:FocusLL() abort
   call win_gotoid(s:location_window_id)

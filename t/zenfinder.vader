@@ -1,3 +1,30 @@
+After:
+  Zclose
+
+" [utils] ======================================================================
+Execute (utils):
+  function! GetLLWinId() abort
+    for winnr in range(1, winnr('$'))
+      if getwinvar(winnr, '&syntax') == 'qf'
+        return winnr
+      endif
+    endfor
+    return -1
+  endfunction
+  
+  function! GetLLItems() abort
+    let winid = GetLLWinId()
+    if winid == -1
+      echoerr 'Zenfinder not open'
+      return []
+    endif
+    return getloclist(GetLLWinId())
+  endfunction
+
+  function! ArrayIncludes(array, regex) abort
+    return len(copy(a:array)->filter('v:val =~ a:regex')) > 0
+  endfunction
+
 " [test] =======================================================================
 Do (Open zenfinder):
   :Zenfinder\<CR>
@@ -13,9 +40,10 @@ Then (Location list should be open):
 
 " [test] =======================================================================
 Do (Close zenfinder):
+  :Zenfinder\<CR>
   :Zclose\<CR>
 
-Then (Location list should be open):
+Then (It should open location list):
   let isopen = 0
   for winnr in range(1, winnr('$'))
     if getwinvar(winnr, '&syntax') == 'qf'
@@ -23,3 +51,38 @@ Then (Location list should be open):
     endif
   endfor
   AssertEqual isopen, 0
+
+" [test] =======================================================================
+Do (Show files in directory):
+  :Zenfinder t/fixtures\<CR>
+
+Then (It should all files):
+  let files = map(GetLLItems(), 'getbufinfo(v:val.bufnr)[0].name')
+  Assert ArrayIncludes(files, 'a.txt$')
+  Assert ArrayIncludes(files, 'b.txt$')
+  Assert ArrayIncludes(files, 'c.md$')
+  Assert ArrayIncludes(files, 'text.md$')
+
+" [test] =======================================================================
+Do (fuzzy find):
+  :Zenfinder t/fixtures\<CR>fixtxt
+
+Then (It should all files):
+  call Zenfinder_TriggerPromptChanged()
+  let files = map(GetLLItems(), 'getbufinfo(v:val.bufnr)[0].name')
+  Assert ArrayIncludes(files, 'a.txt$')
+  Assert ArrayIncludes(files, 'b.txt$')
+  Assert !ArrayIncludes(files, 'c.md$')
+  Assert ArrayIncludes(files, 'text.md$')
+
+" [test] =======================================================================
+Do (regex find):
+  :Zenfinder t/fixtures\<CR>\<C-r>md$
+
+Then (It should all files):
+  call Zenfinder_TriggerPromptChanged()
+  let files = map(GetLLItems(), 'getbufinfo(v:val.bufnr)[0].name')
+  Assert !ArrayIncludes(files, 'a.txt$')
+  Assert !ArrayIncludes(files, 'b.txt$')
+  Assert ArrayIncludes(files, 'c.md$')
+  Assert ArrayIncludes(files, 'text.md$')
