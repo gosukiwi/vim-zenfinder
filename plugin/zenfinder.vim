@@ -245,13 +245,15 @@ function! FormatLocationList(info)
 endfunction
 
 function! s:OpenAllInSplit(vertical) abort
-  let current_files = copy(s:files)
-  call s:CloseZenfinder()
-
   let command = a:vertical == 1 ? 'vsp' : 'sp'
-  for item in current_files
-    silent execute command . ' ' . item
+  let items = getloclist(s:location_window_id)
+  for item in items
+    let bufinfo = getbufinfo(item.bufnr)[0]
+    let path = bufinfo.name
+    silent execute command . ' ' . path
   endfor
+
+  call s:CloseZenfinder()
 endfunction
 
 function! s:OpenZenfinder(type) abort
