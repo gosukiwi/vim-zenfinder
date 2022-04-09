@@ -9,6 +9,11 @@ if !exists('g:zenfinder_command')
   let g:zenfinder_command = 'rg %s --files --color=never --glob ""' 
 endif
 
+" use ripgrep for listing files by default
+if !exists('g:zenfinder_max_ll_files')
+  let g:zenfinder_max_ll_files = 9
+endif
+
 " Add cfilter if it wasn't added already
 packadd! cfilter
 
@@ -104,7 +109,7 @@ endfunction
 
 function! s:TriggerPromptChanged() abort
   let s:prompt = getline('.')[3:]
-  let matched_files = s:FindFiles(s:prompt)[:9] " 9 first entries
+  let matched_files = s:FindFiles(s:prompt)[:g:zenfinder_max_ll_files]
   " See `:help setloclist` for info about this hash format
   let s:formatted_files = map(matched_files, { index, file -> { 'filename': file, 'lnum': 1 } })
 

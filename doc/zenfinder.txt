@@ -55,7 +55,7 @@ Example 3:
   :ldo %s/replace this/with this/g
 <
 ================================================================================
- 2. CONFIGURATION                                               *zenfinder-config*
+ 2. CONFIGURATION                                        *zenfinder-configuration*
 
 You can set the *g:zenfinder_command* variable to whatever command you want to
 use, if you don't want to use `ripgrep`.
@@ -74,5 +74,12 @@ Below are a few examples:
   " Windows
   let g:zenfinder_command = 'dir %s /-n /b /s /a-d'
 <
+By default, Zenfinder displays 9 files in the location list. For browsing
+files, this is enough, but you can change this to whatever you want with the
+*zenfinder_max_ll_files* variable:
+
+>
+  let g:zenfinder_max_ll_files = 100   " 100 files max
+  let g:zenfinder_max_ll_files = -1    " no limit
   
 vim:tw=78:ts=8:ft=help:norl:
