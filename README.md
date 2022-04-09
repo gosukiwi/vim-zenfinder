@@ -24,7 +24,7 @@ Regular usage is as simple as:
 * Type in the prompt to fuzzy find your file (you can toggle regex mode with
   `<C-r>` if needed)
 * Navigate down and up with `<C-j>` and `<C-k>`
-* Once you see the file you want, you can press `ENTER` to open it
+* Once you see the file you want, press `ENTER` to open it
 
 From time to time, you might need to operate on several files. With Zenfinder,
 you can:
