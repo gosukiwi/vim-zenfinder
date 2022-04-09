@@ -69,3 +69,7 @@ let g:zenfinder_command = 'find %s -type f'
 " Windows
 let g:zenfinder_command = 'dir %s /-n /b /s /a-d'
 ```
+
+# Development
+You can run tests with [Vader](https://github.com/junegunn/vader.vim). Install
+it, then just `:Vader <test-file>`.

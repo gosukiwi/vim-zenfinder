@@ -1,0 +1,25 @@
+" [test] =======================================================================
+Do (Open zenfinder):
+  :Zenfinder\<CR>
+
+Then (Location list should be open):
+  let isopen = 0
+  for winnr in range(1, winnr('$'))
+    if getwinvar(winnr, '&syntax') == 'qf'
+      let isopen = 1
+    endif
+  endfor
+  Assert isopen
+
+" [test] =======================================================================
+Do (Close zenfinder):
+  :Zclose\<CR>
+
+Then (Location list should be open):
+  let isopen = 0
+  for winnr in range(1, winnr('$'))
+    if getwinvar(winnr, '&syntax') == 'qf'
+      let isopen = 1
+    endif
+  endfor
+  AssertEqual isopen, 0

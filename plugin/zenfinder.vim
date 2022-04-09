@@ -370,6 +370,8 @@ function! s:OpenZenfinder(type) abort
 
   autocmd TextChangedI <buffer> :call s:ThrottledTriggerPromptChanged.call()
 
+  nnoremap <buffer><silent> q :call <SID>CloseZenfinder()<CR>
+  nnoremap <buffer><silent> <Esc> :call <SID>CloseZenfinder()<CR>
   inoremap <buffer><silent> <Esc> <Esc>:call <SID>CloseZenfinder()<CR>
   inoremap <buffer><silent> <CR> <Esc>:call <SID>RunPrompt()<CR>
   inoremap <buffer><silent> <C-a> <C-o>:Zsplit<CR>
@@ -389,11 +391,13 @@ endfunction
 set quickfixtextfunc=FormatLocationList
 
 command! -bang Zenfinder call s:OpenZenfinder(expand('<bang>') == '!' ? 'buffers' : 'files')
+command! Zclose call s:CloseZenfinder()
 command! -nargs=1 Zreject call s:Reject(<f-args>)
 command! -nargs=1 Zfilter call s:Filter(<f-args>)
 command! -range Zsplit <line1>,<line2>call s:OpenAllInSplit(0)
 command! -range Zvsplit <line1>,<line2>call s:OpenAllInSplit(1)
 call s:AliasCommand('ze', 'Zenfinder')
+call s:AliasCommand('zc', 'Zclose')
 call s:AliasCommand('zr', 'Zreject')
 call s:AliasCommand('zf', 'Zfilter')
 call s:AliasCommand('zsp', 'Zsplit')
