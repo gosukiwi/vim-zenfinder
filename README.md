@@ -2,8 +2,8 @@
 A minimalistic, file-centric, **experimental** fuzzy finder for Vim, using the
 location list.
 
-See the [help file](doc/zenfinder.txt) for the complete documentation. If you
-have Zenfinder installed, you can do it from Vim with: `:help zenfinder`.
+See the [help file](doc/zenfinder.txt) for the complete documentation: `:help
+zenfinder`.
 
 # Installation
 
