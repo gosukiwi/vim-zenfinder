@@ -244,6 +244,16 @@ function! FormatLocationList(info)
   return formatted_items
 endfunction
 
+function! s:OpenAllInSplit(vertical) abort
+  let current_files = copy(s:files)
+  call s:CloseZenfinder()
+
+  let command = a:vertical == 1 ? 'vsp' : 'sp'
+  for item in current_files
+    silent execute command . ' ' . item
+  endfor
+endfunction
+
 function! s:OpenZenfinder(type) abort
   if s:is_prompt_open
     call s:CloseZenfinder()
@@ -319,6 +329,10 @@ set quickfixtextfunc=FormatLocationList
 command! -bang Zenfinder call s:OpenZenfinder(expand('<bang>') == '!' ? 'buffers' : 'files')
 command! -nargs=1 Zreject call s:Reject(<f-args>)
 command! -nargs=1 Zfilter call s:Filter(<f-args>)
+command! Zsplit call s:OpenAllInSplit(0)
+command! Zvsplit call s:OpenAllInSplit(1)
 call s:AliasCommand('ze', 'Zenfinder')
 call s:AliasCommand('zr', 'Zreject')
 call s:AliasCommand('zf', 'Zfilter')
+call s:AliasCommand('zsp', 'Zsplit')
+call s:AliasCommand('zvsp', 'Zvsplit')
