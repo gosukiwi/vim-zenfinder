@@ -85,11 +85,11 @@ location list. Opposite of |:Zfilter|.
 *:Zfilter* - alias *:zf* - selects all files matching the given pattern from the
 location list. Opposite of |:Zreject|.
 
-*:Zsplit* - alias *:zsp* - opens all the files in the location list, in one
-horizontal split each.
+*:Zsplit* [-range] - alias *:zsp* - opens all the files in the location list, in one
+horizontal split each. Accepts range.
 
-*:Zvsplit* - alias *:zvsp* - same as |:Zsplit| but using a vertical split
-instead.
+*:Zvsplit* [-range] - alias *:zvsp* - same as |:Zsplit| but using a vertical split
+instead. Accepts range.
 
 ================================================================================
  3. MAPPINGS                                                  *zenfinder-mappings*
