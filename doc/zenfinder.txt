@@ -15,21 +15,22 @@ Help on using zenfinder                                               *zenfinder
 
 *:Zenfinder* is a minimalistic, file-centric fuzzy finder. It populates the
 location list for you. You can then easily just navigate into those files, or
-do operations on them, like you would normally do with any quickfix or
+operate on them.
+
+Zenfinder provides several tools to make it easy to interact with it's
 location list.
 
-Trigger |:Zenfinder| with your mapping, or just using `:Zenfinder files` or `:Zenfinder
-buffers`. You can also use *:zf* as an alias for |:Zenfinder|.
+Summary:
 
-- Navigate your files by typing using fuzzy find.
+- Execute |:Zenfinder| (or |:ze|), or trigger with a custom mapping (recommended)
+- Fuzzy find your files by (toggle `regex` mode with `<C-r>`)
 - Choose the current file with `<C-j>` and `<C-k>` (`<C-n>` and `<C-p>` are also available)
 - Press `<CR>` to open the file
-- Use `<C-Tab>` to toggle between the prompt and the location list
 - Use `:` to enter command line mode
 - Filter the location list with `:Zfilter` and `:Zreject`
-- Use `:ldo` to perform a command on all visible files
-- Toggle fuzzy/regexp mode with `<C-r>`
+- Use `<C-Tab>` to toggle between the prompt and the location list
 - Use `x` and `d` to delete the current file under cursor
+- Use `:ldo` to perform a command on all visible files
 
 Here are a few usage examples:
 
@@ -40,8 +41,7 @@ Example 1:
                        Notice that its the only matching file
   <CR>                 Press ENTER, opening the file in the current active
                        window
-  
-
+<
 Example 2:
 >
   :zf                  Invoke :Zenfinder, in file mode
@@ -50,20 +50,20 @@ Example 2:
   :                    Press `:`, enter in command line mode
   :Zreject .old        Reject all entries in the location file that match `.old`
   :ldo vsp             Open all in vertical splits
-
+<
 Example 3:
 >
   <leader>b            Invoke :Zenfinder!, in buffer mode
   .md                  Type .md, and find all markdown files
   :                    Enter command line mode
   :ldo %s/replace this/with this/g
-
+<
 ================================================================================
  2. COMMANDS                                                  *zenfinder-commands*
 
 The following commands are provided by Zenfinder:
 
-*:Zenfinder* - alias *:zf* - opens the finder windows (the prompt and the
+*:Zenfinder* - alias *:ze* - opens the finder windows (the prompt and the
 location list).
 
 *:Zreject* - alias *:zr* - rejects all files matching the given pattern from the
