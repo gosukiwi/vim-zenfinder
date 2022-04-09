@@ -21,7 +21,7 @@ let s:files = []
 let s:prompt = ''
 let s:is_prompt_open = 0
 let s:prompt_window_id = 0
-let s:mode = 'fuzzy'
+let s:match_mode = 'fuzzy'
 
 " VENDOR
 " ==============================================================================
@@ -106,10 +106,10 @@ function! s:LoadBuffers() abort
 endfunction
 
 function! s:ToggleRegexMode() abort
-  if s:mode == 'regex'
-    let s:mode = 'fuzzy'
+  if s:match_mode == 'regex'
+    let s:match_mode = 'fuzzy'
   else
-    let s:mode = 'regex'
+    let s:match_mode = 'regex'
   endif
   call s:TriggerPromptChanged()
 endfunction
@@ -117,7 +117,7 @@ endfunction
 function! s:FindFiles(pattern) abort
   if a:pattern == '' | return copy(s:files) | endif
 
-  if s:mode == 'regex'
+  if s:match_mode == 'regex'
     return filter(copy(s:files), { index, file -> file =~ a:pattern })
   endif
 
@@ -127,7 +127,7 @@ endfunction
 function! s:FindBuffers(pattern) abort
   if a:pattern == '' | return copy(s:buffers) | endif
 
-  if s:mode == 'regex'
+  if s:match_mode == 'regex'
     return filter(copy(s:buffers), { index, file -> file =~ a:pattern })
   endif
 
@@ -200,7 +200,7 @@ endfunction
 function! s:SetLL(files) abort
   call setloclist(s:location_window_id, a:files, 'r')
 
-  let currentmode = s:mode == 'regex' ? 'regex' : 'fuzzy'
+  let currentmode = s:match_mode == 'regex' ? 'regex' : 'fuzzy'
   let title = '[Zenfinder] [' . currentmode . ']'
 	call setloclist(s:location_window_id, [], 'a', { 'title' : title })
 endfunction
