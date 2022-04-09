@@ -106,11 +106,7 @@ function! s:LoadBuffers() abort
 endfunction
 
 function! s:ToggleRegexMode() abort
-  if s:match_mode == 'regex'
-    let s:match_mode = 'fuzzy'
-  else
-    let s:match_mode = 'regex'
-  endif
+  let s:match_mode = s:match_mode == 'regex' ? 'fuzzy' : 'regex'
   call s:TriggerPromptChanged()
 endfunction
 
