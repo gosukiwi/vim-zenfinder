@@ -355,6 +355,7 @@ function! s:OpenZenfinder(...) abort
   nnoremap <buffer><silent> x :call <SID>LLRemoveAtCursor()<CR>
   nnoremap <buffer><silent> d :call <SID>LLRemoveAtCursor()<CR>
   cnoreabbrev <buffer> q Zclose
+  cnoreabbrev <buffer> quit Zclose
 
   " pseudo-prompt
   botright new
