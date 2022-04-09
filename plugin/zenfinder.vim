@@ -340,6 +340,8 @@ function! s:OpenZenfinder(...) abort
   setlocal nonu
   setlocal nornu
   setlocal nowrap
+  resize 9
+  setlocal winfixheight
   nnoremap <buffer><silent> <CR> :call <SID>RunPrompt()<CR>
   nnoremap <buffer><silent> <C-a> :Zsplit<CR>
   nnoremap <buffer><silent> <C-v> :Zvsplit<CR>
