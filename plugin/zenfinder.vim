@@ -339,6 +339,7 @@ function! s:OpenZenfinder(...) abort
   let s:location_window_id = win_getid()
   setlocal nonu
   setlocal nornu
+  setlocal nowrap
   nnoremap <buffer><silent> <CR> :call <SID>RunPrompt()<CR>
   nnoremap <buffer><silent> <C-a> :Zsplit<CR>
   nnoremap <buffer><silent> <C-v> :Zvsplit<CR>
@@ -366,6 +367,7 @@ function! s:OpenZenfinder(...) abort
   setlocal winfixheight
   setlocal nonu
   setlocal nornu
+  setlocal nowrap
   set buftype=nofile
   set bufhidden=hide
   setlocal noswapfile
