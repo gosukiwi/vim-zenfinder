@@ -199,10 +199,10 @@ endfunction
 
 function! s:SetLL(files) abort
   call setloclist(s:location_window_id, a:files, 'r')
-
+  " set title
   let currentmode = s:match_mode == 'regex' ? 'regex' : 'fuzzy'
   let title = '[Zenfinder] [' . currentmode . '] [' . getcwd() . ']'
-	call setloclist(s:location_window_id, [], 'a', { 'title' : title })
+  call setloclist(s:location_window_id, [], 'a', { 'title' : title })
 endfunction
 
 function! s:RotateActive(clockwise) abort
