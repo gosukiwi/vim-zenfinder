@@ -9,6 +9,12 @@ zenfinder`.
 
 ```vimscript
 Plug 'gosukiwi/vim-zenfinder'
+
+" ...
+
+" recommended mappings, you can use anything here
+nnoremap <silent> <leader>f :Zenfinder<CR>
+nnoremap <silent> <leader>b :Zenfinder!<CR>
 ```
 
 # Usage
