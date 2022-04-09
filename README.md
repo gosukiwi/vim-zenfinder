@@ -35,7 +35,7 @@ Advanced usage:
 * You can open those files with `:Zsplit` and `:Zvsplit`, or even run commands
   on them with good old `:help :ldo`!
 
-**Minimal:** Zenfinder is ~300 lines of Vimscript. It uses `ripgrep` for
+**Minimal:** Zenfinder is ~400 lines of Vimscript. It uses `ripgrep` for
 blazing fast file listing (respecting things like `.gitignore`), as well as
 Vim's built-in `matchfuzzy` function to quickly search the results.
 
@@ -43,7 +43,7 @@ Vim's built-in `matchfuzzy` function to quickly search the results.
 configure it to make it even faster if you need to.
 
 **No dependencies:** While it uses `ripgrep` by default, you can define your
-own command to fetch all relevant files.
+own command to fetch all relevant files. Ex:
 
 ```
 " by default, use ripgrep
