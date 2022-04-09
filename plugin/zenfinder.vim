@@ -219,6 +219,14 @@ function! s:Filter(pattern) abort
   execute "Lfilter " . a:pattern
 endfunction
 
+function! s:LLRemoveAtCursor()
+  let linenum = line('.')
+  let items = copy(s:formatted_files)
+  let s:formatted_files = filter(items, { index -> (index + 1) != linenum })
+
+  call s:SetLL(s:formatted_files)
+endfunction
+
 function! FormatLocationList(info)
   " not Zenfinder's location list
   if !exists('s:location_window_id') | return | endif
@@ -272,6 +280,8 @@ function! s:OpenZenfinder(type) abort
   nnoremap <buffer><silent> I :call <SID>FocusPrompt()<CR>a
   nnoremap <buffer><silent> C :call <SID>FocusPrompt()<CR>a
   nnoremap <buffer><silent><nowait> c :call <SID>FocusPrompt()<CR>a
+  nnoremap <buffer><silent> x :call <SID>LLRemoveAtCursor()<CR>
+  nnoremap <buffer><silent> d :call <SID>LLRemoveAtCursor()<CR>
 
   " pseudo-prompt
   botright new

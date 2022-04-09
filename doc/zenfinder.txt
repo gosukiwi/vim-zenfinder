@@ -27,6 +27,7 @@ buffers`. You can also use *:zf* as an alias for |:Zenfinder|.
 - Filter the location list with `:Zfilter` and `:Zreject`
 - Use `:ldo` to perform a command on all visible files
 - Toggle fuzzy/regexp mode with `<C-r>`
+- Use `x` and `d` to delete the current file under cursor
 
 Here are a few usage examples:
 
