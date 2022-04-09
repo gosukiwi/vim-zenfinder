@@ -139,7 +139,7 @@ function! s:FocusPrompt() abort
   call win_gotoid(s:prompt_window_id)
 endfunction
 
-function! s:ClosePrompt() abort
+function! s:CloseZenfinder() abort
   if s:is_prompt_open == 0 | return | endif
   let s:is_prompt_open = 0
 
@@ -157,7 +157,7 @@ endfunction
 function! s:RunPrompt() abort
   call s:FocusLL()
   .ll
-  call s:ClosePrompt()
+  call s:CloseZenfinder()
 endfunction
 
 function! s:PromptHandleBackspace() abort
@@ -236,9 +236,9 @@ function! FormatLocationList(info)
   return formatted_items
 endfunction
 
-function! s:OpenPrompt(type) abort
+function! s:OpenZenfinder(type) abort
   if s:is_prompt_open
-    call s:ClosePrompt()
+    call s:CloseZenfinder()
     return
   endif
   let s:is_prompt_open = 1
@@ -263,9 +263,9 @@ function! s:OpenPrompt(type) abort
   setlocal nornu
   nnoremap <buffer><silent> <CR> :call <SID>RunPrompt()<CR>
   nnoremap <buffer><silent> <C-Tab> :call <SID>FocusPrompt()<CR>a
-  nnoremap <buffer><silent> <BS> :call <SID>ClosePrompt()<CR>
-  nnoremap <buffer><silent> <Esc> :call <SID>ClosePrompt()<CR>
-  nnoremap <buffer><silent> q :call <SID>ClosePrompt()<CR>
+  nnoremap <buffer><silent> <BS> :call <SID>CloseZenfinder()<CR>
+  nnoremap <buffer><silent> <Esc> :call <SID>CloseZenfinder()<CR>
+  nnoremap <buffer><silent> q :call <SID>CloseZenfinder()<CR>
   nnoremap <buffer><silent> a :call <SID>FocusPrompt()<CR>a
   nnoremap <buffer><silent> A :call <SID>FocusPrompt()<CR>a
   nnoremap <buffer><silent> i :call <SID>FocusPrompt()<CR>a
@@ -289,9 +289,8 @@ function! s:OpenPrompt(type) abort
   startinsert!
 
   autocmd TextChangedI <buffer> :call s:ThrottledTriggerPromptChanged.call()
-  " autocmd BufWinLeave <buffer> :call s:ClosePrompt()
 
-  inoremap <buffer><silent> <Esc> <Esc>:call <SID>ClosePrompt()<CR>
+  inoremap <buffer><silent> <Esc> <Esc>:call <SID>CloseZenfinder()<CR>
   inoremap <buffer><silent> <CR> <Esc>:call <SID>RunPrompt()<CR>
   imap <expr><buffer><silent> <BS> <SID>PromptHandleBackspace()
   imap <expr><buffer><silent> <C-w> <SID>PromptHandleCW()
@@ -307,7 +306,7 @@ endfunction
 " configure the custom formatting function
 set quickfixtextfunc=FormatLocationList
 
-command! -bang Zenfinder call s:OpenPrompt(expand('<bang>') == '!' ? 'buffers' : 'files')
+command! -bang Zenfinder call s:OpenZenfinder(expand('<bang>') == '!' ? 'buffers' : 'files')
 command! -nargs=1 Zreject call s:Reject(<f-args>)
 command! -nargs=1 Zfilter call s:Filter(<f-args>)
 call s:AliasCommand('ze', 'Zenfinder')
