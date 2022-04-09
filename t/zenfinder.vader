@@ -2,7 +2,7 @@ After:
   Zclose
 
 " [utils] ======================================================================
-Execute (utils):
+Execute (Define utility functions):
   function! GetLLWinId() abort
     for winnr in range(1, winnr('$'))
       if getwinvar(winnr, '&syntax') == 'qf'
@@ -98,3 +98,30 @@ Then (It should only files matching /md$/):
   Assert !ArrayIncludes(files, 'b.txt$')
   Assert ArrayIncludes(files, 'c.md$')
   Assert ArrayIncludes(files, 'text.md$')
+
+" [test] =======================================================================
+Do (Opens the first file):
+  :Zenfinder t/fixtures\<CR>\<CR>
+
+Execute (It should have that buffer opened):
+  let buf = getbufinfo('text.md')
+  Assert len(buf) == 1
+  execute buf[0].bufnr . 'bw'
+
+" [test] =======================================================================
+Do (Opens the next file):
+  :Zenfinder t/fixtures\<CR>\<C-j>\<CR>
+
+Execute (It should have that buffer opened):
+  let buf = getbufinfo('c.md')
+  Assert len(buf) == 1
+  execute buf[0].bufnr . 'bw'
+
+" [test] =======================================================================
+Do (Opens the next file):
+  :Zenfinder t/fixtures\<CR>\<C-k>\<CR>
+
+Execute (It should have that buffer opened):
+  let buf = getbufinfo('a.txt')
+  Assert len(buf) == 1
+  execute buf[0].bufnr . 'bw'
