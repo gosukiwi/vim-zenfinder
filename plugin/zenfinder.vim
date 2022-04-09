@@ -127,11 +127,12 @@ endfunction
 function! s:FindBuffers(pattern) abort
   if a:pattern == '' | return copy(s:buffers) | endif
 
+  let buffers = map(copy(s:buffers), 'getbufinfo(v:val)[0].name')
   if s:match_mode == 'regex'
-    return filter(copy(s:buffers), { index, file -> file =~ a:pattern })
+    return filter(buffers, { index, file -> file =~ a:pattern })
   endif
 
-  return matchfuzzy(s:buffers, a:pattern)
+  return matchfuzzy(buffers, a:pattern)
 endfunction
 
 function! s:TriggerPromptChanged() abort
