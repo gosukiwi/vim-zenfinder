@@ -127,12 +127,14 @@ endfunction
 function! s:FindBuffers(pattern) abort
   if a:pattern == '' | return copy(s:buffers) | endif
 
-  let buffers = map(copy(s:buffers), 'getbufinfo(v:val)[0].name')
+  let buffers = map(copy(s:buffers), "{ 'bufnr': v:val, 'file': fnamemodify(getbufinfo(v:val)[0].name, ':.') }")
   if s:match_mode == 'regex'
-    return filter(buffers, { index, file -> file =~ a:pattern })
+    let result = filter(buffers, { index, bufninfo -> bufninfo.file =~ a:pattern })
   else
-    return matchfuzzy(buffers, a:pattern)
+    let result = matchfuzzy(buffers, a:pattern, { 'key': 'file' })
   endif
+
+  return map(result, 'v:val.bufnr')
 endfunction
 
 function! s:TriggerPromptChanged() abort
@@ -272,7 +274,6 @@ function! FormatLocationList(info)
   let items = getloclist(s:location_window_id)
   for item in items
     let bufinfo = getbufinfo(item.bufnr)[0]
-    let cwd = escape(getcwd(), "\\")
     let filename = fnamemodify(bufinfo.name, ':.')
     let filename = substitute(filename, '\\', '/', 'g')
     if filename == ''
