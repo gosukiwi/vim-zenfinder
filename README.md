@@ -11,7 +11,7 @@ zenfinder`.
 Plug 'gosukiwi/vim-zenfinder'
 ```
 
-## Why
+# Why
 Most popular fuzzy finders for Vim have either too many external dependencies,
 don't integrate very well with Vim's ecosystem, or are massive and packed with
 unused features.
